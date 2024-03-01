@@ -1,22 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
-  padding: 0;
+  width: 100vw;
+  height: 100v;
+  padding: 5;
   margin: 0;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    Segoe UI,
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    Fira Sans,
-    Droid Sans,
-    Helvetica Neue,
-    sans-serif;
 }
-
 a {
   color: inherit;
   text-decoration: none;
@@ -28,5 +20,9 @@ a {
 
 img {
   max-width: 100%;
-  height: auto;
+  max-height: 100%;
+}
+.myApp {
+  display: flex;
+  flex-direction: column;
 }

@@ -1,7 +1,8 @@
 import React from "react";
-export default function index() {
+import Head from "next/head";
+export default function Personal_Info() {
   return (
-    <div className="bg-black">
+    <div>
       <h1>Personal_Info</h1>
     </div>
   );
