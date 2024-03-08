@@ -5,6 +5,7 @@ import iitbhilai from "../../public/image 7.png";
 import sign from "./Sign_Up.module.css";
 import college from "../../public/group_logo.svg";
 import google from "../../public/image 8.png";
+import {isValidName, isValidEmail, isValidContact, isValidPassword, isValidIdNumber} from "../../utils/validation";
 
 export default function Sign_Up() {
   const [ID_Number, setID_Number] = useState("");
@@ -14,6 +15,14 @@ export default function Sign_Up() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [idNumberErrorMessage, setIdNumberErrorMessage] = useState('');
+  const [fnameErrorMessage, setFnameErrorMessage] = useState('');
+  const [lnameErrorMessage, setLnameErrorMessage] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [contactErrorMessage, setContactErrorMessage] = useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const [passwordMatchErrorMessage, setPasswordMatchErrorMessage] = useState('');
 
   const handleSubmit = () => {
     // Do something with the form data
@@ -45,54 +54,71 @@ export default function Sign_Up() {
                 value={ID_Number}
                 type="number"
                 onChange={(event) => setID_Number(event.target.value)}
+                onBlur={(event) => isValidIdNumber(event.target.value) ? setIdNumberErrorMessage('') : setIdNumberErrorMessage('Id is not valid')} 
                 required
               />
+              {idNumberErrorMessage && <div style={{ color: 'red' }}>{idNumberErrorMessage}</div>}
               <input
                 className={sign.input}
                 placeholder="First Name"
                 value={firstName}
                 onChange={(event) => setFirstName(event.target.value)}
+                onBlur={(event) => isValidName(event.target.value) ? setFnameErrorMessage('') : setFnameErrorMessage('First name is not valid')} 
                 required
               />
+              {fnameErrorMessage && <div style={{ color: 'red' }}>{fnameErrorMessage}</div>}
               <input
                 className={sign.input}
                 placeholder="Last Name"
                 value={lastName}
                 onChange={(event) => setLastName(event.target.value)}
+                onBlur={(event) => isValidName(event.target.value) ? setLnameErrorMessage('') : setLnameErrorMessage('Last name is not valid')} 
                 required
               />
+              {lnameErrorMessage && <div style={{ color: 'red' }}>{lnameErrorMessage}</div>}
               <input
                 className={sign.input}
                 placeholder="Email Id"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
+                onBlur={(event) => isValidEmail(event.target.value) ? setEmailErrorMessage('') : setEmailErrorMessage('Email is not valid')} 
                 type="email"
                 required
               />
+              {emailErrorMessage && <div style={{ color: 'red' }}>{emailErrorMessage}</div>}
               <input
                 className={sign.input}
                 placeholder="Phone Number"
                 value={phoneNumber}
                 onChange={(event) => setPhoneNumber(event.target.value)}
-                type="number"
+                onBlur={(event) => isValidContact(event.target.value) ? setContactErrorMessage('') : setContactErrorMessage('Contact number is not valid')} 
+                type="text"
                 required
               />
+              {contactErrorMessage && <div style={{ color: 'red' }}>{contactErrorMessage}</div>}
               <input
                 className={sign.input}
                 placeholder="Password"
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
+                onBlur={(event) => isValidPassword(event.target.value) ? setPasswordErrorMessage('') : 
+                setPasswordErrorMessage(`Password must be 8 to 15 character long.
+                Must contain atleast one digit, small and capital alphabate 
+                and one specical character from this [@$!%*?&].`)} 
                 required
               />
+              {passwordErrorMessage && <div style={{ color: 'red' }}>{passwordErrorMessage}</div>}
               <input
                 className={sign.input}
                 placeholder="Confirm Password"
                 type="password"
                 value={confirmPassword}
                 onChange={(event) => setConfirmPassword(event.target.value)}
+                onBlur={(event) => setConfirmPassword(event.target.value) === password  ? setPasswordMatchErrorMessage('') : setPasswordMatchErrorMessage('Password not matched')}
                 required
               />
+             { password !== confirmPassword ? <div style={{ color: 'red' }}>{passwordMatchErrorMessage}</div> : ''}
               <Link href="/Sign/Sign_In">
                 <button type="submit" className={sign.submit}>
                   Sign Up

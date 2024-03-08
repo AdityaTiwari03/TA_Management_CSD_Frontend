@@ -15,7 +15,7 @@ let isValidEmail = function (email) {
 //**********************************************************************//
 
 //==Mobile Number Validation
-let isValidMobile = function (number) {
+let isValidContact = function (number) {
     let mobileRegex = /^\d{10}$/;
     return mobileRegex.test(number);
 }
@@ -42,6 +42,13 @@ let isValidDate = function(value) {
   }
 //**********************************************************************//
 
-export { isValidDate, isValid, isValidEmail, isValidMobile, isValidName, isValidPassword }
+//==Mobile Number Validation
+let isValidIdNumber = function (number) {
+  let mobileRegex = /^\d{8}$/;
+  return mobileRegex.test(number);
+}
+//**********************************************************************//
+
+export { isValidDate, isValid, isValidEmail, isValidContact, isValidName, isValidPassword, isValidIdNumber }
 
 //**********************************************************************//
