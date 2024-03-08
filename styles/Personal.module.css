@@ -1,0 +1,174 @@
+.whitebox {
+  height: 95%;
+  width: 90%;
+  border-radius: 30px;
+  background-color: white;
+  padding: 15px 60px;
+  overflow: scroll;
+}
+.industrialContainer {
+  height: 80%;
+  overflow: scroll;
+  padding: 0px 30px;
+  scrollbar-width: inherit;
+}
+.head {
+  font-size: x-large;
+  font-weight: 630;
+  margin-bottom: 25px;
+}
+.label {
+  font-size: larger;
+  margin-bottom: 10px;
+}
+.input {
+  background-color: #d9d9d9;
+  font-size: large;
+  padding: 5px 20px;
+  border-radius: 5px;
+  height: fit-content;
+  color: #4a3c8d;
+  font-weight: 600;
+  width: 100%;
+  resize: none;
+  overflow: scroll;
+}
+.id {
+  margin-bottom: 20px;
+  width: 300px;
+}
+.Name,
+.Email {
+  margin-bottom: 20px;
+  width: 400px;
+}
+.Phone,
+.uploads,
+.ProInfo {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.IndInfo {
+  height: fit-content;
+  width: 90%;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #d9d9d9;
+  padding: 10px;
+}
+.Phone1,
+.Phone2,
+.Photo,
+.Resume {
+  width: 300px;
+}
+.Designation,
+.Department,
+.IndustrialEntries {
+  width: 400px;
+  height: fit-content;
+}
+.buttons {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.button {
+  padding: 10px 80px;
+}
+.Summary {
+  width: 90%;
+}
+.Experience {
+  width: 90%;
+  margin-bottom: 20px;
+}
+.label_Professional {
+  font-size: medium;
+}
+.inputExperience {
+  background-color: #d9d9d9;
+  padding-left: 12px;
+  font-size: large;
+  height: fit-content;
+  color: #4a3c8d;
+  font-weight: 600;
+  resize: none;
+  font-weight: normal;
+  font-size: medium;
+  border-bottom: 2px solid #4a3c8d;
+}
+
+.input_Ind {
+  width: 100%;
+  background-color: #d9d9d9;
+  padding-left: 12px;
+  font-size: large;
+  height: fit-content;
+  color: #4a3c8d;
+  font-weight: 600;
+  font-weight: normal;
+  font-size: medium;
+  border-bottom: 2px solid #4a3c8d;
+}
+
+.inputExperience:focus {
+  border: 1px solid #d9d9d9;
+}
+.addContainer {
+  width: 100%;
+  display: flex;
+  height: 25px;
+  justify-content: end;
+}
+.add,
+.remove {
+  display: flex;
+  align-items: center;
+  background-color: #4a3c8d;
+  padding: 0px 30px;
+  height: 25px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+}
+@media only screen and (max-width: 900px) {
+  .Phone,
+  .uploads,
+  .ProInfo,
+  .IndInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .buttons {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .link {
+    margin: auto;
+  }
+  .whitebox {
+    padding: 15px 5%;
+    position: sticky;
+    height: fit-content;
+  }
+  .inputExperience {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-left: 0;
+  }
+  .label_Professional {
+    font-size: medium;
+    width: 50%;
+  }
+}

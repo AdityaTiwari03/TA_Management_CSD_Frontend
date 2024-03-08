@@ -6,8 +6,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "bootstrap": "^5.3.3",
     "next": "latest",
     "react": "18.2.0",
+    "react-bootstrap": "^2.10.1",
+    "react-datepicker": "^6.2.0",
     "react-dom": "18.2.0"
   },
   "engines": {
