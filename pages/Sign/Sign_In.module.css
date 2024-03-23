@@ -5,6 +5,8 @@
   overflow: hidden;
   display: flex;
   align-content: center;
+  overflow: hidden;
+  /* -webkit-overflow-scrolling:  */
 }
 .whitebox {
   background-color: white;

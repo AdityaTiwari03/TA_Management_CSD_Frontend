@@ -6,7 +6,8 @@ import Link from "next/link";
 import college from "../../public/group_logo.svg";
 import google from "../../public/image 8.png";
 import { useState } from "react";
-import {isValidPassword, isValidIdNumber} from "../../utils/validation";
+import axios from "axios"
+import { isValidPassword, isValidIdNumber } from "../../utils/validation";
 
 export default function Sign_In() {
   const [ID_Number, setID_Number] = useState("");
@@ -15,10 +16,17 @@ export default function Sign_In() {
   const [idNumberErrorMessage, setIdNumberErrorMessage] = useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Do something with the form data
     console.log("ID Number:", ID_Number);
     console.log("Password:", password);
+    const data = {
+      idNumber: ID_Number,
+      password: password,
+    }
+
+    const reqdata = await axios.post("http://localhost:8000/api/v1/users/login", data);
+    console.log(reqdata);
   };
   return (
     <div className={sign.content}>
@@ -39,20 +47,20 @@ export default function Sign_In() {
               value={ID_Number}
               type="text"
               onChange={(event) => setID_Number(event.target.value)}
-              onBlur={(event) => isValidIdNumber(event.target.value) ? setIdNumberErrorMessage('') : setIdNumberErrorMessage('Id is not valid')} 
+              onBlur={(event) => isValidIdNumber(event.target.value) ? setIdNumberErrorMessage('') : setIdNumberErrorMessage('Id is not valid')}
               required
             />
-             {idNumberErrorMessage && <div style={{ color: 'red' }}>{idNumberErrorMessage}</div>}
+            {idNumberErrorMessage && <div style={{ color: 'red' }}>{idNumberErrorMessage}</div>}
             <input
               className={sign.input}
               placeholder="Password"
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              onBlur={(event) => isValidPassword(event.target.value) ? setPasswordErrorMessage('') : 
-              setPasswordErrorMessage(`Password must be 8 to 15 character long.
+              onBlur={(event) => isValidPassword(event.target.value) ? setPasswordErrorMessage('') :
+                setPasswordErrorMessage(`Password must be 8 to 15 character long.
               Must contain atleast one digit, small and capital alphabate 
-              and one specical character from this [@$!%*?&].`)} 
+              and one specical character from this [@$!%*?&].`)}
               required
             />
             {passwordErrorMessage && <div style={{ color: 'red' }}>{passwordErrorMessage}</div>}
