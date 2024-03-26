@@ -1,22 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TALayout from "./layout";
 import per from "../styles/Personal.module.css";
-import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from 'next/router';
+import axios from 'axios';
+
 export default function Personal_Info() {
-  const [FName, Set_FName] = useState("Aditya");
-  const [LName, Set_LName] = useState("Tiwari");
-  const [Email, Set_Email] = useState("aadi.tiwari0208@gmail.com");
-  const [Ph1, Set_Ph1] = useState(1214009000);
-  const [Ph2, Set_Ph2] = useState(1214009000);
+  const router = useRouter();
+  const { idNumber } = router.query;
+  const [Email, Set_Email] = useState("");
+  const [Ph1, Set_Ph1] = useState("");
+  const [Ph2, Set_Ph2] = useState("");
+  const [Name, Set_Name] = useState();
+ 
+  const [ID_Number, Set_ID_Number] = useState(idNumber);
 
-  const [ID_Number, Set_ID_Number] = useState(12140090);
-  const [Name, Set_Name] = useState(FName + " " + LName);
+  useEffect(async () => {
+    const id = localStorage.getItem('idNumber') || idNumber;
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/v1/users/info/?idNumber=${id}`);
+        // Set_FName(response.data.data.firstName);
+        // Set_LName(response.data.data.lastName);
+        Set_Name(response.data.data.firstName + " " + response.data.data.lastName);
+        Set_ID_Number(response.data.data.idNumber);
+        Set_Email(response.data.data.email);
+        Set_Ph1(response.data.data.phone);
+        Set_Ph2(response.data.data.phone);
 
-  // useEffect(() => {
-  //   // const getUserInfo = await axios.get(`http://localhost:8000/api/v1/users/info/?idNumber=${resp.data.data.user.idNumber}`);
-
-  // }, []);
+        // Handle the response data
+      } catch (error) {
+        // Handle errors
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleNext = () => {
 

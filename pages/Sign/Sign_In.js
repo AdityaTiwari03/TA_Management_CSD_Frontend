@@ -19,8 +19,8 @@ export default function Sign_In() {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const router = useRouter();
 
-  const navigateToAboutPage = () => {
-    router.push('/Personal_Info');
+  const navigateToAboutPage = (idNumber) => {
+    router.push(`/Personal_Info?idNumber=${idNumber}`);
   };
 
   const navigateToTADashboard = () => {
@@ -39,16 +39,17 @@ export default function Sign_In() {
     try {
       const resp = await axios.post("http://localhost:8000/api/v1/users/login", data);
       if (resp.data.statusCode === 200 && resp.data.success) {
-         const userFormStatus = await axios.get(`http://localhost:8000/api/v1/users/form/status?idNumber=${resp.data.data.user.idNumber}`);
-         console.log(userFormStatus.data);
-         if(userFormStatus.data.statusCode === 200 && !userFormStatus.data.data.isUserInfoSaved) {
-          navigateToAboutPage();
+        localStorage.setItem('idNumber', ID_Number);
+        const userFormStatus = await axios.get(`http://localhost:8000/api/v1/users/form/status?idNumber=${resp.data.data.user.idNumber}`);
+        console.log(userFormStatus.data);
+        if (userFormStatus.data.statusCode === 200 && !userFormStatus.data.data.isUserInfoSaved) {
+          navigateToAboutPage(resp.data.data.user.idNumber);
         } else {
           navigateToTADashboard();
         }
       }
     } catch (error) {
-      
+
     }
 
   };
@@ -90,9 +91,9 @@ export default function Sign_In() {
               required
             />
             {passwordErrorMessage && <div style={{ color: 'red' }}>{passwordErrorMessage}</div>}
-              {" "}
-              <button className={sign.button} onClick={handleSubmit}>
-                Log In
+            {" "}
+            <button className={sign.button} onClick={handleSubmit}>
+              Log In
               </button>
           </div>
         </div>
