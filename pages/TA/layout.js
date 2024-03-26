@@ -1,5 +1,5 @@
 import Topbar from "./Topbar";
-export default function TALayout({ children }) {
+export default function Layout({ children }) {
   console.log(children);
   return (
     <>

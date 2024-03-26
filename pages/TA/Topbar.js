@@ -7,26 +7,21 @@ import Navbar from "react-bootstrap/Navbar";
 import tb from "../../styles/Topbar.module.css";
 export default function Topbar() {
   return (
-    <Nav
-      activeKey="/home"
-      onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
-      className={tb.topb}
-      justify
-    >
+    <Nav activeKey="/home" className={tb.topb} justify>
       <Nav.Item className={tb.nav}>
         <Image src={iitbhilai} style={{ width: 50, marginRight: 150 }} />
         <Nav.Item className={tb.nav}>
-          <Nav.Link href="/home" className={tb.navbuttons} active>
-            Active
+          <Nav.Link href="/TA/course_feed" className={tb.navbuttons}>
+            Course Feed
           </Nav.Link>
-          <Nav.Link eventKey="link-1" className={tb.navbuttons}>
-            Link
+          <Nav.Link href="/TA/add_Course" className={tb.navbuttons}>
+            Add Courses
           </Nav.Link>
-          <Nav.Link eventKey="link-2" className={tb.navbuttons}>
-            Link
+          <Nav.Link href="/Personal_Info" className={tb.navbuttons}>
+            Update Info
           </Nav.Link>
           <Nav.Link eventKey="disabled" className={tb.navbuttons}>
-            Disabled
+            TA List
           </Nav.Link>
         </Nav.Item>
       </Nav.Item>
