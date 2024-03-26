@@ -13,6 +13,18 @@ export default function Personal_Info() {
   const [ID_Number, Set_ID_Number] = useState(12140090);
   const [Name, Set_Name] = useState(FName + " " + LName);
 
+  // useEffect(() => {
+  //   // const getUserInfo = await axios.get(`http://localhost:8000/api/v1/users/info/?idNumber=${resp.data.data.user.idNumber}`);
+
+  // }, []);
+
+  const handleNext = () => {
+
+    const data = {
+
+    }
+  }
+
   return (
     <TALayout>
       <div className="main">
@@ -96,7 +108,7 @@ export default function Personal_Info() {
           <br />
           <div className={per.buttons}>
             <Link href="/Professional_Info" className={per.link}>
-              <button className={per.button}>Next</button>
+              <button className={per.button} onClick={handleNext}>Next</button>
             </Link>
             <Link href="/Professional_Info" className={per.link}>
               <button className={per.button}>Back</button>{" "}

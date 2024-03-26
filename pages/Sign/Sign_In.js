@@ -23,6 +23,10 @@ export default function Sign_In() {
     router.push('/Personal_Info');
   };
 
+  const navigateToTADashboard = () => {
+    router.push('/dasboard/student');
+  };
+
   const handleSubmit = async () => {
     // Do something with the form data
     console.log("ID Number:", ID_Number);
@@ -36,18 +40,15 @@ export default function Sign_In() {
       const resp = await axios.post("http://localhost:8000/api/v1/users/login", data);
       if (resp.data.statusCode === 200 && resp.data.success) {
          const userFormStatus = await axios.get(`http://localhost:8000/api/v1/users/form/status?idNumber=${resp.data.data.user.idNumber}`);
-         if(userFormStatus.data.statusCode === 200 && userFormStatus.data.success === true) {
+         console.log(userFormStatus.data);
+         if(userFormStatus.data.statusCode === 200 && !userFormStatus.data.data.isUserInfoSaved) {
           navigateToAboutPage();
         } else {
-          
+          navigateToTADashboard();
         }
       }
     } catch (error) {
-      // if (error.response.data.statusCode === 409 && !error.response.data.success) {
-      //   setStatusMessage(error.response.data.message);
-      // } else if (error.response.data.statusCode === 400 && !error.response.data.success) {
-      //   setStatusMessage(error.response.data.message);
-      // }
+      
     }
 
   };
