@@ -23,13 +23,14 @@ export default function Sign_Up() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [idNumberErrorMessage, setIdNumberErrorMessage] = useState('');
-  const [fnameErrorMessage, setFnameErrorMessage] = useState('');
-  const [lnameErrorMessage, setLnameErrorMessage] = useState('');
-  const [emailErrorMessage, setEmailErrorMessage] = useState('');
-  const [contactErrorMessage, setContactErrorMessage] = useState('');
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-  const [passwordMatchErrorMessage, setPasswordMatchErrorMessage] = useState('');
+  const [idNumberErrorMessage, setIdNumberErrorMessage] = useState("");
+  const [fnameErrorMessage, setFnameErrorMessage] = useState("");
+  const [lnameErrorMessage, setLnameErrorMessage] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [contactErrorMessage, setContactErrorMessage] = useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [passwordMatchErrorMessage, setPasswordMatchErrorMessage] =
+    useState("");
   const [statusMessage, setStatusMessage] = useState("");
 
   const handleSubmit = async (e) => {
@@ -39,8 +40,15 @@ export default function Sign_Up() {
         setPasswordMatchErrorMessage("Password not matched");
         return;
       }
-      if (idNumberErrorMessage || fnameErrorMessage || lnameErrorMessage || emailErrorMessage || contactErrorMessage
-        || passwordErrorMessage || !passwordMatchErrorMessage) {
+      if (
+        idNumberErrorMessage ||
+        fnameErrorMessage ||
+        lnameErrorMessage ||
+        emailErrorMessage ||
+        contactErrorMessage ||
+        passwordErrorMessage ||
+        !passwordMatchErrorMessage
+      ) {
         return "";
       } else {
         const data = {
@@ -59,12 +67,18 @@ export default function Sign_Up() {
             data
           );
           if (resp.data.statusCode === 200 && resp.data.success) {
-            console.log(resp.data)
+            console.log(resp.data);
           }
         } catch (error) {
-          if (error.response.data.statusCode === 409 && !error.response.data.success) {
+          if (
+            error.response.data.statusCode === 409 &&
+            !error.response.data.success
+          ) {
             setStatusMessage(error.response.data.message);
-          } else if (error.response.data.statusCode === 400 && !error.response.data.success) {
+          } else if (
+            error.response.data.statusCode === 400 &&
+            !error.response.data.success
+          ) {
             setStatusMessage(error.response.data.message);
           }
         }
@@ -74,7 +88,6 @@ export default function Sign_Up() {
       console.error("Error:", error);
     }
   };
-
 
   return (
     <div className={sign.content}>
@@ -103,7 +116,9 @@ export default function Sign_Up() {
                 required
               />
               {idNumberErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{idNumberErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {idNumberErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -118,7 +133,9 @@ export default function Sign_Up() {
                 required
               />
               {fnameErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{fnameErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {fnameErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -133,7 +150,9 @@ export default function Sign_Up() {
                 required
               />
               {lnameErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{lnameErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {lnameErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -149,7 +168,9 @@ export default function Sign_Up() {
                 required
               />
               {emailErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{emailErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {emailErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -165,7 +186,9 @@ export default function Sign_Up() {
                 required
               />
               {contactErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{contactErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {contactErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -185,7 +208,9 @@ export default function Sign_Up() {
                 required
               />
               {passwordErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{passwordErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {passwordErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -202,11 +227,13 @@ export default function Sign_Up() {
               />
               {password !== confirmPassword ? (
                 <div className={sign.long_message}>
-                  <div style={{ color: "red" }} >{passwordMatchErrorMessage}</div>
+                  <div style={{ color: "red" }}>
+                    {passwordMatchErrorMessage}
+                  </div>
                 </div>
               ) : (
-                  ""
-                )}
+                ""
+              )}
               {/* <Link href="/Sign/Sign_In"> */}
               <button type="submit" className={sign.submit}>
                 Sign Up
@@ -214,11 +241,16 @@ export default function Sign_Up() {
               {/* </Link> */}
             </div>
             {statusMessage && (
-              <div style={{ color: "red" }} className={sign.message}>User Already Exist!</div>
+              <div style={{ color: "red" }} className={sign.message}>
+                User Already Exist!
+              </div>
             )}
           </form>
           <Link href="/Sign/Sign_In">
-            <p className={sign.already} className={sign.message}> Already Have an Account?</p>
+            <p className={sign.already} className={sign.message}>
+              {" "}
+              Already Have an Account?
+            </p>
           </Link>
         </div>
       </div>
