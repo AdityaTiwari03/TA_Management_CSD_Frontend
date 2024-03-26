@@ -8,6 +8,8 @@ import google from "../../public/image 8.png";
 import { useState } from "react";
 import axios from "axios"
 import { isValidPassword, isValidIdNumber } from "../../utils/validation";
+import SignInBtn from "./Sign_InBtn";
+import { useRouter } from 'next/router';
 
 export default function Sign_In() {
   const [ID_Number, setID_Number] = useState("");
@@ -15,6 +17,11 @@ export default function Sign_In() {
 
   const [idNumberErrorMessage, setIdNumberErrorMessage] = useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const router = useRouter();
+
+  const navigateToAboutPage = () => {
+    router.push('/Personal_Info');
+  };
 
   const handleSubmit = async () => {
     // Do something with the form data
@@ -25,8 +32,24 @@ export default function Sign_In() {
       password: password,
     }
 
-    const reqdata = await axios.post("http://localhost:8000/api/v1/users/login", data);
-    console.log(reqdata);
+    try {
+      const resp = await axios.post("http://localhost:8000/api/v1/users/login", data);
+      if (resp.data.statusCode === 200 && resp.data.success) {
+         const userFormStatus = await axios.get(`http://localhost:8000/api/v1/users/form/status?idNumber=${resp.data.data.user.idNumber}`);
+         if(userFormStatus.data.statusCode === 200 && userFormStatus.data.success === true) {
+          navigateToAboutPage();
+        } else {
+          
+        }
+      }
+    } catch (error) {
+      // if (error.response.data.statusCode === 409 && !error.response.data.success) {
+      //   setStatusMessage(error.response.data.message);
+      // } else if (error.response.data.statusCode === 400 && !error.response.data.success) {
+      //   setStatusMessage(error.response.data.message);
+      // }
+    }
+
   };
   return (
     <div className={sign.content}>
@@ -58,23 +81,18 @@ export default function Sign_In() {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               onBlur={(event) => isValidPassword(event.target.value) ? setPasswordErrorMessage('') :
-                setPasswordErrorMessage(`Password must be 8 to 15 character long.
-              Must contain atleast one digit, small and capital alphabate 
-              and one specical character from this [@$!%*?&].`)}
+                setPasswordErrorMessage(`Password must be 8-15 characters long and include at least one:
+                digit (0-9), 
+                lowercase letter (a-z)
+                uppercase letter (A-Z)
+                special character from @$!%*?&`)}
               required
             />
             {passwordErrorMessage && <div style={{ color: 'red' }}>{passwordErrorMessage}</div>}
-            <Link href="/Personal_Info">
               {" "}
               <button className={sign.button} onClick={handleSubmit}>
                 Log In
               </button>
-            </Link>
-            <p className={sign.already}> Already Have an Account?</p>
-            <div className={sign.google}>
-              <Image src={google} className={sign.google_img} />
-              Sign Up by Google
-            </div>
           </div>
         </div>
       </div>

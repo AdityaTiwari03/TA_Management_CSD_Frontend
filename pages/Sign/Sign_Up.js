@@ -9,12 +9,10 @@ import {
   isValidPassword,
   isValidIdNumber,
 } from "../../utils/validation";
-// ///////////////////////////////////////////////
 import iitbhilai from "../../public/image 7.png";
 import sign from "./Sign_Up.module.css";
 import college from "../../public/group_logo.svg";
 import google from "../../public/image 8.png";
-// ///////////////////////////////////////////////
 
 export default function Sign_Up() {
   const [ID_Number, setID_Number] = useState("");
@@ -25,47 +23,58 @@ export default function Sign_Up() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [idNumberErrorMessage, setIdNumberErrorMessage] = useState("");
-  const [fnameErrorMessage, setFnameErrorMessage] = useState("");
-  const [lnameErrorMessage, setLnameErrorMessage] = useState("");
-  const [emailErrorMessage, setEmailErrorMessage] = useState("");
-  const [contactErrorMessage, setContactErrorMessage] = useState("");
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
-  const [passwordMatchErrorMessage, setPasswordMatchErrorMessage] =
-    useState("");
+  const [idNumberErrorMessage, setIdNumberErrorMessage] = useState('');
+  const [fnameErrorMessage, setFnameErrorMessage] = useState('');
+  const [lnameErrorMessage, setLnameErrorMessage] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [contactErrorMessage, setContactErrorMessage] = useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const [passwordMatchErrorMessage, setPasswordMatchErrorMessage] = useState('');
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      setPasswordMatchErrorMessage("Password not matched");
-      return;
-    }
-    const data = {
-      idNumber: ID_Number,
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      phone: phoneNumber,
-      password: password,
-    };
-
     try {
-      // Make post request
-      const reqdata = await axios.post(
-        "http://localhost:8000/api/v1/users/register",
-        data
-      );
-      if(reqdata.status === 409) {
-        console.log(reqdata.data.error)
-      } else if(reqdata.status === 200) {
-        console.log(reqdata.data)
-      } 
-      // Handle successmkk
+      e.preventDefault();
+      if (password !== confirmPassword) {
+        setPasswordMatchErrorMessage("Password not matched");
+        return;
+      }
+      if (idNumberErrorMessage || fnameErrorMessage || lnameErrorMessage || emailErrorMessage || contactErrorMessage
+        || passwordErrorMessage || !passwordMatchErrorMessage) {
+        return "";
+      } else {
+        const data = {
+          idNumber: ID_Number,
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phoneNumber,
+          password: password,
+        };
+
+        // Make post request
+        try {
+          const resp = await axios.post(
+            "http://localhost:8000/api/v1/users/register",
+            data
+          );
+          if (resp.data.statusCode === 200 && resp.data.success) {
+            console.log(resp.data)
+          }
+        } catch (error) {
+          if (error.response.data.statusCode === 409 && !error.response.data.success) {
+            setStatusMessage(error.response.data.message);
+          } else if (error.response.data.statusCode === 400 && !error.response.data.success) {
+            setStatusMessage(error.response.data.message);
+          }
+        }
+      }
     } catch (error) {
       // Handle error
       console.error("Error:", error);
     }
   };
+
 
   return (
     <div className={sign.content}>
@@ -94,7 +103,7 @@ export default function Sign_Up() {
                 required
               />
               {idNumberErrorMessage && (
-                <div style={{ color: "red" }}>{idNumberErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>{idNumberErrorMessage}</div>
               )}
               <input
                 className={sign.input}
@@ -109,7 +118,7 @@ export default function Sign_Up() {
                 required
               />
               {fnameErrorMessage && (
-                <div style={{ color: "red" }}>{fnameErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>{fnameErrorMessage}</div>
               )}
               <input
                 className={sign.input}
@@ -124,7 +133,7 @@ export default function Sign_Up() {
                 required
               />
               {lnameErrorMessage && (
-                <div style={{ color: "red" }}>{lnameErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>{lnameErrorMessage}</div>
               )}
               <input
                 className={sign.input}
@@ -140,7 +149,7 @@ export default function Sign_Up() {
                 required
               />
               {emailErrorMessage && (
-                <div style={{ color: "red" }}>{emailErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>{emailErrorMessage}</div>
               )}
               <input
                 className={sign.input}
@@ -156,7 +165,7 @@ export default function Sign_Up() {
                 required
               />
               {contactErrorMessage && (
-                <div style={{ color: "red" }}>{contactErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>{contactErrorMessage}</div>
               )}
               <input
                 className={sign.input}
@@ -167,14 +176,16 @@ export default function Sign_Up() {
                 onBlur={(event) =>
                   isValidPassword(event.target.value)
                     ? setPasswordErrorMessage("")
-                    : setPasswordErrorMessage(`Password must be 8 to 15 character long.
-                Must contain atleast one digit, small and capital alphabate 
-                and one specical character from this [@$!%*?&].`)
+                    : setPasswordErrorMessage(`Password must be 8-15 characters long and include at least one:
+                    digit (0-9), 
+                    lowercase letter (a-z)
+                    uppercase letter (A-Z)
+                    special character from @$!%*?&`)
                 }
                 required
               />
               {passwordErrorMessage && (
-                <div style={{ color: "red" }}>{passwordErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>{passwordErrorMessage}</div>
               )}
               <input
                 className={sign.input}
@@ -190,24 +201,25 @@ export default function Sign_Up() {
                 required
               />
               {password !== confirmPassword ? (
-                <div style={{ color: "red" }}>{passwordMatchErrorMessage}</div>
+                <div className={sign.long_message}>
+                  <div style={{ color: "red" }} >{passwordMatchErrorMessage}</div>
+                </div>
               ) : (
-                ""
-              )}
+                  ""
+                )}
               {/* <Link href="/Sign/Sign_In"> */}
               <button type="submit" className={sign.submit}>
                 Sign Up
               </button>
               {/* </Link> */}
             </div>
+            {statusMessage && (
+              <div style={{ color: "red" }} className={sign.message}>User Already Exist!</div>
+            )}
           </form>
           <Link href="/Sign/Sign_In">
-            <p className={sign.already}> Already Have an Account?</p>
+            <p className={sign.already} className={sign.message}> Already Have an Account?</p>
           </Link>
-          <div className={sign.google}>
-            <Image src={google} className={sign.google_img} />
-            Sign Up by Google
-          </div>
         </div>
       </div>
     </div>
