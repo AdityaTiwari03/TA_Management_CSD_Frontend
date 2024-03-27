@@ -47,10 +47,10 @@ export default function Sign_In() {
         const userFormStatus = await axios.get(
           `http://localhost:8000/api/v1/users/form/status?idNumber=${resp.data.data.user.idNumber}`
         );
-        console.log(userFormStatus.data);
+        console.log(resp.data.data.user.isUserInfoSaved);
         if (
           userFormStatus.data.statusCode === 200 &&
-          !userFormStatus.data.data.isUserInfoSaved
+          !userFormStatus.data.data.isUserInfoSaved && !resp.data.data.user.isUserInfoSaved
         ) {
           navigateToAboutPage(resp.data.data.user.idNumber);
         } else {
