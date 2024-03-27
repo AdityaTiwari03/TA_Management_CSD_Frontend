@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import {
   isValidName,
   isValidEmail,
@@ -14,6 +14,7 @@ import {
 import iitbhilai from "../../public/image 7.png";
 import sign from "./Sign_Up.module.css";
 import college from "../../public/group_logo.svg";
+import { useRouter } from "next/router";
 
 export default function Sign_Up() {
   const [ID_Number, setID_Number] = useState("");
@@ -33,10 +34,14 @@ export default function Sign_Up() {
   const [passwordMatchErrorMessage, setPasswordMatchErrorMessage] =
     useState("");
   const [statusMessage, setStatusMessage] = useState("");
+  const router = useRouter();
 
+  const navigateToAboutPage = (idNumber) => {
+    router.push(`/Personal_Info?idNumber=${idNumber}`);
+  };
   const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
       if (password !== confirmPassword) {
         setPasswordMatchErrorMessage("Password not matched");
         return;
@@ -69,6 +74,9 @@ export default function Sign_Up() {
           );
           if (resp.data.statusCode === 200 && resp.data.success) {
             console.log(resp.data);
+            localStorage.setItem("idNumber", ID_Number);
+            console.log(resp.data.data.user.idNumber);
+            navigateToAboutPage(resp.data.data.user.idNumber);
           }
         } catch (error) {
           if (
@@ -252,10 +260,7 @@ export default function Sign_Up() {
             )}
           </form>
           <Link href="/Sign/Sign_In">
-            <p  className={sign.message}>
-              {" "}
-              Already Have an Account?
-            </p>
+            <p className={sign.message}> Already Have an Account?</p>
           </Link>
         </div>
       </div>
