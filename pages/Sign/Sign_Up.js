@@ -30,55 +30,59 @@ export default function Sign_Up() {
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [contactErrorMessage, setContactErrorMessage] = useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
-  const [statusMessage, setStatusMessage] = useState(""); // Changed to string
   const [passwordMatchErrorMessage, setPasswordMatchErrorMessage] =
     useState("");
-
-  const router = useRouter();
-
-  const navigateToAboutPage = (idNumber) => {
-    router.push(`/Personal_Info?idNumber=${idNumber}`);
-  };
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      setPasswordMatchErrorMessage("Password not matched");
-      return;
-    }
-
-    if (
-      idNumberErrorMessage ||
-      fnameErrorMessage ||
-      lnameErrorMessage ||
-      emailErrorMessage ||
-      contactErrorMessage ||
-      passwordErrorMessage ||
-      !passwordMatchErrorMessage
-    ) {
-      return;
-    }
-
-    const data = {
-      idNumber: ID_Number,
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      phone: phoneNumber,
-      password: password,
-    };
-
     try {
-      const resp = await axios.post(
-        "http://localhost:8000/api/v1/users/register",
-        data
-      );
-      console.log(resp.data);
-      if (resp.data.statusCode === 200 && resp.data.success) {
-        navigateToAboutPage(resp.data.data.user.idNumber);
-      }else {
-        console.log("User Already Exists!");
+      e.preventDefault();
+      if (password !== confirmPassword) {
+        setPasswordMatchErrorMessage("Password not matched");
+        return;
+      }
+      if (
+        idNumberErrorMessage ||
+        fnameErrorMessage ||
+        lnameErrorMessage ||
+        emailErrorMessage ||
+        contactErrorMessage ||
+        passwordErrorMessage ||
+        !passwordMatchErrorMessage
+      ) {
+        return "";
+      } else {
+        const data = {
+          idNumber: ID_Number,
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phoneNumber,
+          password: password,
+        };
+
+        // Make post request
+        try {
+          const resp = await axios.post(
+            "http://localhost:8000/api/v1/users/register",
+            data
+          );
+          if (resp.data.statusCode === 200 && resp.data.success) {
+            console.log(resp.data);
+          }
+        } catch (error) {
+          if (
+            error.response.data.statusCode === 409 &&
+            !error.response.data.success
+          ) {
+            setStatusMessage(error.response.data.message);
+          } else if (
+            error.response.data.statusCode === 400 &&
+            !error.response.data.success
+          ) {
+            setStatusMessage(error.response.data.message);
+          }
+        }
       }
     } catch (error) {
       console.log("User Already Exists!");
@@ -89,7 +93,6 @@ export default function Sign_Up() {
       console.error("Error:", error);
     }
   };
-  useEffect(() => { }, [statusMessage,setStatusMessage]);
 
   return (
     <div className={sign.content}>
@@ -243,13 +246,16 @@ export default function Sign_Up() {
               {/* </Link> */}
             </div>
             {statusMessage && (
-              <div style={{ color: "red" }} >
-                {statusMessage}
+              <div style={{ color: "red" }} className={sign.message}>
+                User Already Exist!
               </div>
             )}
           </form>
           <Link href="/Sign/Sign_In">
-            <p className={sign.already}> Already Have an Account?</p>
+            <p  className={sign.message}>
+              {" "}
+              Already Have an Account?
+            </p>
           </Link>
         </div>
       </div>
