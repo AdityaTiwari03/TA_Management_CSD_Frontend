@@ -1,10 +1,13 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import TALayout from "./layout";
 import per from "../styles/Personal.module.css";
-import { useState } from "react";
 import DatePicker from "react-datepicker";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import "react-datepicker/dist/react-datepicker.css";
+
 export default function Professional_Info() {
   const [Designation, Set_Designation] = useState("hello");
   const [Department, Set_Department] = useState("world");
@@ -13,11 +16,30 @@ export default function Professional_Info() {
     {
       startDate: new Date(),
       endDate: new Date(),
-      companyName: "Google",
-      industry: "IT",
-      post: "CEO",
+      companyName: "IIT Bhilai",
+      industry: "Education",
+      post: " Teaching Assistant",
     },
   ]);
+
+  const router = useRouter();
+  const { idNumber } = router.query;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/users/info/?idNumber=${idNumber}`
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (idNumber) {
+      fetchData();
+    }
+  }, [idNumber]);
 
   const handleExperienceChange = (index, field, value) => {
     const list = [...experienceList];
@@ -37,11 +59,32 @@ export default function Professional_Info() {
       },
     ]);
   };
+
   const handleExperienceRemove = (index) => {
     const list = [...experienceList];
     list.splice(index, 1);
     setExperienceList(list);
   };
+
+  const handleNext = () => {
+    const data = {};
+  };
+
+  const navigateToIndustry = (idNumber) => {
+    router.push(`/Industrial_Info?idNumber=${idNumber}`);
+  };
+  const navigateToPersonal = (idNumber) => {
+    router.push(`/Personal_Info?idNumber=${idNumber}`);
+  }
+  const handleIndustry = () => {
+    console.log(idNumber);
+    navigateToIndustry(idNumber);
+  };
+  const handlePersonal = () => {
+    console.log(idNumber);
+    navigateToPersonal(idNumber);
+  }
+
   return (
     <TALayout>
       <div className="main">
@@ -206,13 +249,10 @@ export default function Professional_Info() {
           </div>
           <br />
           <div className={per.buttons}>
-            <Link href="/Industrial_Info" className={per.link}>
-              <button className={per.button}>Next</button>
-            </Link>
-            <Link href="/Personal_Info" className={per.link}>
-              {" "}
-              <button className={per.button}>Back</button>
-            </Link>
+            <button className={per.button} onClick={handlePersonal}>Back</button>
+            <button className={per.button} onClick={handleIndustry}>
+              Next
+            </button>
           </div>
         </div>
       </div>

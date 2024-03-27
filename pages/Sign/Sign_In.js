@@ -20,7 +20,7 @@ export default function Sign_In() {
   const router = useRouter();
 
   const navigateToAboutPage = (idNumber) => {
-    router.push(`/Personal_Info?idNumber=${idNumber}`);
+    router.push(`/Professional_Info?idNumber=${idNumber}`);
   };
 
   const navigateToTADashboard = () => {

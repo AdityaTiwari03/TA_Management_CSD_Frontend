@@ -1,9 +1,10 @@
 import React from "react";
 import TALayout from "./layout";
 import per from "../styles/Personal.module.css";
-import { useState } from "react";
-import DatePicker from "react-datepicker";
-import Link from "next/link";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+
 export default function Industrial_Info() {
   const [formData, setFormData] = useState({
     areaOfSpecialisation: [""],
@@ -16,6 +17,32 @@ export default function Industrial_Info() {
     publications: [""],
     patents: [""],
   });
+  const router = useRouter();
+  const { idNumber } = router.query;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/users/info/?idNumber=${idNumber}`
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    if (idNumber) {
+      fetchData();
+    }
+  }, [idNumber]);
+
+  const handleProfessional = () => {
+    router.push(`/Professional_Info?idNumber=${idNumber}`);
+  };
+
+  const handleNext = () => {
+    const data = {};
+  };
 
   const handleInputChange = (field, index, value) => {
     const data = { ...formData };
@@ -415,15 +442,12 @@ export default function Industrial_Info() {
             </div>
           </div>
           <div className={per.buttons}>
-            <Link href="Professional_Info" className={per.link}>
-              <button className={per.button} onClick={handleSubmit}>
-                Next
-              </button>{" "}
-            </Link>
-
-            <Link href="Professional_Info" className={per.link}>
-              <button className={per.button}>Back</button>
-            </Link>
+            <button className={per.button} onClick={handleSubmit}>
+              Save
+            </button>{" "}
+            <button className={per.button} onClick={handleProfessional}>
+              Back
+            </button>
           </div>
         </div>
       </div>

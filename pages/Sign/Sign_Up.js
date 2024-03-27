@@ -37,7 +37,7 @@ export default function Sign_Up() {
   const router = useRouter();
 
   const navigateToAboutPage = (idNumber) => {
-    router.push(`/Personal_Info?idNumber=${idNumber}`);
+    router.push(`/Professional_Info?idNumber=${idNumber}`);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
