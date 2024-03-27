@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import { useRouter } from "next/router";
 import {
   isValidName,
   isValidEmail,
@@ -9,10 +10,10 @@ import {
   isValidPassword,
   isValidIdNumber,
 } from "../../utils/validation";
+
 import iitbhilai from "../../public/image 7.png";
 import sign from "./Sign_Up.module.css";
 import college from "../../public/group_logo.svg";
-import google from "../../public/image 8.png";
 
 export default function Sign_Up() {
   const [ID_Number, setID_Number] = useState("");
@@ -23,58 +24,72 @@ export default function Sign_Up() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [idNumberErrorMessage, setIdNumberErrorMessage] = useState('');
-  const [fnameErrorMessage, setFnameErrorMessage] = useState('');
-  const [lnameErrorMessage, setLnameErrorMessage] = useState('');
-  const [emailErrorMessage, setEmailErrorMessage] = useState('');
-  const [contactErrorMessage, setContactErrorMessage] = useState('');
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-  const [passwordMatchErrorMessage, setPasswordMatchErrorMessage] = useState('');
-  const [statusMessage, setStatusMessage] = useState("");
+  const [idNumberErrorMessage, setIdNumberErrorMessage] = useState("");
+  const [fnameErrorMessage, setFnameErrorMessage] = useState("");
+  const [lnameErrorMessage, setLnameErrorMessage] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [contactErrorMessage, setContactErrorMessage] = useState("");
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [statusMessage, setStatusMessage] = useState(""); // Changed to string
+  const [passwordMatchErrorMessage, setPasswordMatchErrorMessage] =
+    useState("");
+
+  const router = useRouter();
+
+  const navigateToAboutPage = (idNumber) => {
+    router.push(`/Personal_Info?idNumber=${idNumber}`);
+  };
 
   const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-      if (password !== confirmPassword) {
-        setPasswordMatchErrorMessage("Password not matched");
-        return;
-      }
-      if (idNumberErrorMessage || fnameErrorMessage || lnameErrorMessage || emailErrorMessage || contactErrorMessage
-        || passwordErrorMessage || !passwordMatchErrorMessage) {
-        return "";
-      } else {
-        const data = {
-          idNumber: ID_Number,
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-          phone: phoneNumber,
-          password: password,
-        };
+    e.preventDefault();
 
-        // Make post request
-        try {
-          const resp = await axios.post(
-            "http://localhost:8000/api/v1/users/register",
-            data
-          );
-          if (resp.data.statusCode === 200 && resp.data.success) {
-            console.log(resp.data)
-          }
-        } catch (error) {
-          if (error.response.data.statusCode === 409 && !error.response.data.success) {
-            setStatusMessage(error.response.data.message);
-          } else if (error.response.data.statusCode === 400 && !error.response.data.success) {
-            setStatusMessage(error.response.data.message);
-          }
-        }
+    if (password !== confirmPassword) {
+      setPasswordMatchErrorMessage("Password not matched");
+      return;
+    }
+
+    if (
+      idNumberErrorMessage ||
+      fnameErrorMessage ||
+      lnameErrorMessage ||
+      emailErrorMessage ||
+      contactErrorMessage ||
+      passwordErrorMessage ||
+      !passwordMatchErrorMessage
+    ) {
+      return;
+    }
+
+    const data = {
+      idNumber: ID_Number,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      phone: phoneNumber,
+      password: password,
+    };
+
+    try {
+      const resp = await axios.post(
+        "http://localhost:8000/api/v1/users/register",
+        data
+      );
+      console.log(resp.data);
+      if (resp.data.statusCode === 200 && resp.data.success) {
+        navigateToAboutPage(resp.data.data.user.idNumber);
+      }else {
+        console.log("User Already Exists!");
       }
     } catch (error) {
-      // Handle error
+      console.log("User Already Exists!");
+      setStatusMessage("User Already Exists!"); // Set the error message
+      setTimeout(() => {
+        setStatusMessage(""); // Clear the status message after 3 seconds
+      }, 3000);
       console.error("Error:", error);
     }
   };
-
+  useEffect(() => { }, [statusMessage,setStatusMessage]);
 
   return (
     <div className={sign.content}>
@@ -103,7 +118,9 @@ export default function Sign_Up() {
                 required
               />
               {idNumberErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{idNumberErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {idNumberErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -118,7 +135,9 @@ export default function Sign_Up() {
                 required
               />
               {fnameErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{fnameErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {fnameErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -133,7 +152,9 @@ export default function Sign_Up() {
                 required
               />
               {lnameErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{lnameErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {lnameErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -149,7 +170,9 @@ export default function Sign_Up() {
                 required
               />
               {emailErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{emailErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {emailErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -165,7 +188,9 @@ export default function Sign_Up() {
                 required
               />
               {contactErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{contactErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {contactErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -185,7 +210,9 @@ export default function Sign_Up() {
                 required
               />
               {passwordErrorMessage && (
-                <div style={{ color: "red" }} className={sign.message}>{passwordErrorMessage}</div>
+                <div style={{ color: "red" }} className={sign.message}>
+                  {passwordErrorMessage}
+                </div>
               )}
               <input
                 className={sign.input}
@@ -202,11 +229,13 @@ export default function Sign_Up() {
               />
               {password !== confirmPassword ? (
                 <div className={sign.long_message}>
-                  <div style={{ color: "red" }} >{passwordMatchErrorMessage}</div>
+                  <div style={{ color: "red" }}>
+                    {passwordMatchErrorMessage}
+                  </div>
                 </div>
               ) : (
-                  ""
-                )}
+                ""
+              )}
               {/* <Link href="/Sign/Sign_In"> */}
               <button type="submit" className={sign.submit}>
                 Sign Up
@@ -214,11 +243,13 @@ export default function Sign_Up() {
               {/* </Link> */}
             </div>
             {statusMessage && (
-              <div style={{ color: "red" }} className={sign.message}>User Already Exist!</div>
+              <div style={{ color: "red" }} >
+                {statusMessage}
+              </div>
             )}
           </form>
           <Link href="/Sign/Sign_In">
-            <p className={sign.already} className={sign.message}> Already Have an Account?</p>
+            <p className={sign.already}> Already Have an Account?</p>
           </Link>
         </div>
       </div>
