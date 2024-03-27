@@ -1,24 +1,22 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import axios from "axios";
 import TALayout from "./layout";
 import per from "../styles/Personal.module.css";
 import DatePicker from "react-datepicker";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function Professional_Info() {
-  const [Designation, Set_Designation] = useState("hello");
-  const [Department, Set_Department] = useState("world");
+  const [Designation, Set_Designation] = useState("");
+  const [Department, Set_Department] = useState("");
   const [Summary, setSummary] = useState("");
   const [experienceList, setExperienceList] = useState([
     {
       startDate: new Date(),
       endDate: new Date(),
-      companyName: "IIT Bhilai",
-      industry: "Education",
-      post: " Teaching Assistant",
+      companyName: "",
+      industry: "",
+      post: "",
     },
   ]);
 
@@ -66,24 +64,44 @@ export default function Professional_Info() {
     setExperienceList(list);
   };
 
-  const handleNext = () => {
-    const data = {};
-  };
+  // const handleNext = () => {
+  //   const data = {};
+  // };
 
   const navigateToIndustry = (idNumber) => {
     router.push(`/Industrial_Info?idNumber=${idNumber}`);
   };
   const navigateToPersonal = (idNumber) => {
     router.push(`/Personal_Info?idNumber=${idNumber}`);
-  }
-  const handleIndustry = () => {
+  };
+  const handleIndustry = async (e) => {
     console.log(idNumber);
-    navigateToIndustry(idNumber);
+    e.preventDefault();
+    try {
+      const data = {
+        idNumber: idNumber,
+        designation: Designation,
+        department: Department,
+        experience: experienceList,
+        profileSummary: Summary,
+      };
+      console.log(data);
+      const resp = await axios.post(
+        "http://localhost:8000/api/v1/users/Professional_Info",
+        data
+      );
+      console.log(resp.data);
+      if (resp.data.statusCode === 200 && resp.data.success) {
+        navigateToIndustry(idNumber);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
   const handlePersonal = () => {
     console.log(idNumber);
     navigateToPersonal(idNumber);
-  }
+  };
 
   return (
     <TALayout>
@@ -93,10 +111,10 @@ export default function Professional_Info() {
           <div className={per.ProInfo}>
             <div className={per.Designation}>
               {" "}
-              <div className={per.label}> Designation </div>
+              <div className={per.label}> Job Title </div>
               <input
                 className={per.input}
-                placeholder="Designation"
+                placeholder="Job Title"
                 value={Designation}
                 onChange={(event) => {
                   Set_Designation(event.target.value);
@@ -107,10 +125,10 @@ export default function Professional_Info() {
             </div>
             <div className={per.Department}>
               {" "}
-              <div className={per.label}> Department </div>
+              <div className={per.label}> Organisation's Name </div>
               <input
                 className={per.input}
-                placeholder="Department"
+                placeholder="Organisation's Name"
                 value={Department}
                 onChange={(event) => {
                   Set_Department(event.target.value);
@@ -126,6 +144,7 @@ export default function Professional_Info() {
               <div key={index}>
                 <div
                   className={per.input}
+                  // placeholder={exp.companyName}
                   style={{
                     display: "flex",
                     flexDirection: "column",
@@ -168,6 +187,7 @@ export default function Professional_Info() {
                       className={per.inputExperience}
                       value={exp.companyName}
                       style={{ width: "80%" }}
+                      placeholder="Company Name"
                       onChange={(event) =>
                         handleExperienceChange(
                           index,
@@ -184,6 +204,7 @@ export default function Professional_Info() {
                       <input
                         className={per.inputExperience}
                         value={exp.industry}
+                        placeholder="Industry"
                         onChange={(event) =>
                           handleExperienceChange(
                             index,
@@ -199,6 +220,7 @@ export default function Professional_Info() {
                       <input
                         className={per.inputExperience}
                         value={exp.post}
+                        placeholder="Post"
                         onChange={(event) =>
                           handleExperienceChange(
                             index,
@@ -249,7 +271,9 @@ export default function Professional_Info() {
           </div>
           <br />
           <div className={per.buttons}>
-            <button className={per.button} onClick={handlePersonal}>Back</button>
+            <button className={per.button} onClick={handlePersonal}>
+              Back
+            </button>
             <button className={per.button} onClick={handleIndustry}>
               Next
             </button>

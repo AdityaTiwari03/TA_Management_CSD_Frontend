@@ -20,28 +20,58 @@ export default function Industrial_Info() {
   const router = useRouter();
   const { idNumber } = router.query;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
+
+  const fetchData = async () => {
+    try {
+      if (idNumber) {
         const response = await axios.get(
           `http://localhost:8000/api/v1/users/info/?idNumber=${idNumber}`
         );
         console.log(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
       }
-    };
-    if (idNumber) {
-      fetchData();
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
+  };
+  useEffect(() => {
+    fetchData();
   }, [idNumber]);
 
-  const handleProfessional = () => {
+  const handleProfessional = async () => {
     router.push(`/Professional_Info?idNumber=${idNumber}`);
   };
+  const navigateToTADashboard = () => {
+    router.push("/dasboard/student");
+  };
+  const handleNext = async (e) => {
+    e.preventDefault();
+    try {
+      const data = {
+        idNumber: idNumber,
+        areaOfSpecialisation: formData.areaOfSpecialisation,
+        primaryProgrammingSkills: formData.primaryProgrammingSkills,
+        secondaryProgrammingSkills: formData.secondaryProgrammingSkills,
+        primarySkills: formData.primarySkills,
+        secondarySkills: formData.secondarySkills,
+        softwareTools: formData.softwareTools,
+        hardwareTools: formData.hardwareTools,
+        publications: formData.publications,
+        patents: formData.patents,
+      };
 
-  const handleNext = () => {
-    const data = {};
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/users/Industrial_Info`,
+        data
+      );
+
+      console.log(response.data);
+
+      if (response.data.statusCode === 200 && response.data.success) {
+        navigateToTADashboard();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const handleInputChange = (field, index, value) => {
@@ -66,9 +96,9 @@ export default function Industrial_Info() {
     }
   };
 
-  const handleSubmit = () => {
-    console.log(formData);
-  };
+  // const handleSubmit = () => {
+  //   console.log(formData);
+  // };
   return (
     <TALayout>
       <div className="main">
@@ -442,7 +472,7 @@ export default function Industrial_Info() {
             </div>
           </div>
           <div className={per.buttons}>
-            <button className={per.button} onClick={handleSubmit}>
+            <button className={per.button} onClick={handleNext}>
               Save
             </button>{" "}
             <button className={per.button} onClick={handleProfessional}>
