@@ -20,7 +20,6 @@ export default function Industrial_Info() {
   const router = useRouter();
   const { idNumber } = router.query;
 
-
   const fetchData = async () => {
     try {
       if (idNumber) {

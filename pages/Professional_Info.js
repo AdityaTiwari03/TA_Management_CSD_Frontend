@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TALayout from "./layout";
 import per from "../styles/Personal.module.css";
@@ -10,6 +10,13 @@ export default function Professional_Info() {
   const [Designation, Set_Designation] = useState("");
   const [Department, Set_Department] = useState("");
   const [Summary, setSummary] = useState("");
+  const [educationList, seteducationList] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    collegeName: "",
+    branch: "",
+    course: "",
+  });
   const [experienceList, setExperienceList] = useState([
     {
       startDate: new Date(),
@@ -20,6 +27,15 @@ export default function Professional_Info() {
     },
   ]);
 
+  const [projectList, setprojectList] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      title: "",
+      skills: "",
+      description: "",
+    },
+  ]);
   const router = useRouter();
   const { idNumber } = router.query;
 
@@ -44,7 +60,17 @@ export default function Professional_Info() {
     list[index][field] = value;
     setExperienceList(list);
   };
+  const handleprojectChange = (index, field, value) => {
+    const list = [...projectList];
+    list[index][field] = value;
+    setprojectList(list);
+  };
 
+  const handleEducationChange = (field, value) => {
+    const list = [...educationList];
+    list[field] = value;
+    seteducationList(list);
+  };
   const handleExperienceAdd = () => {
     setExperienceList([
       ...experienceList,
@@ -62,6 +88,24 @@ export default function Professional_Info() {
     const list = [...experienceList];
     list.splice(index, 1);
     setExperienceList(list);
+  };
+  const handleprojectAdd = () => {
+    setprojectList([
+      ...projectList,
+      {
+        startDate: new Date(),
+        endDate: new Date(),
+        title: "",
+        skills: "",
+        description: "",
+      },
+    ]);
+  };
+
+  const handleprojectRemove = (index) => {
+    const list = [...projectList];
+    list.splice(index, 1);
+    setprojectList(list);
   };
 
   // const handleNext = () => {
@@ -138,6 +182,87 @@ export default function Professional_Info() {
               />
             </div>
           </div>
+
+          <div className={per.Education}>
+            <div className={per.label}> Education (Latest) </div>
+            <div
+              className={per.input}
+              // placeholder={exp.companyName}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                fontWeight: "normal",
+                gap: 12,
+                paddingTop: 15,
+                paddingBottom: 15,
+                fontSize: 2,
+              }}
+            >
+              <div className="flex flex-col gap-3 justify-between align-middle md:flex-row md:gap-4 ">
+                <div className="flex  gap-4 justify-between md:justify-start">
+                  <label className={per.label_Professional}>To</label>
+                  <DatePicker
+                    className={per.inputExperience}
+                    selected={educationList.startDate}
+                    onChange={(date) =>
+                      handleExperienceChange("startDate", date)
+                    }
+                    required
+                  />{" "}
+                </div>
+                <div className="flex align-middle gap-4 justify-between md:justify-start">
+                  <label className={per.label_Professional}>From</label>
+                  <DatePicker
+                    className={per.inputExperience}
+                    selected={educationList.endDate}
+                    onChange={(date) => handleExperienceChange("endDate", date)}
+                    required
+                  />{" "}
+                </div>
+              </div>
+              <div className="flex align-middle gap-4 justify-between md:justify-start">
+                <label className={per.label_Professional}>College Name</label>
+                <input
+                  className={per.inputExperience}
+                  value={educationList.collegeName}
+                  style={{ width: "80%" }}
+                  placeholder="IIT Bhilai"
+                  onChange={(event) =>
+                    handleEducationChange("collegeName", event.target.value)
+                  }
+                  required
+                />
+              </div>
+              <div className="flex flex-col gap-3 justify-between align-middle md:flex-row md:gap-0">
+                <div className="flex align-middle justify-between gap-4 w-84">
+                  <label className={per.label_Professional}>Branch</label>
+                  <input
+                    className={per.inputExperience}
+                    value={educationList.branch}
+                    style={{ width: 300 }}
+                    placeholder="Computer Science and Engineering"
+                    onChange={(event) =>
+                      handleEducationChange("branch", event.target.value)
+                    }
+                    required
+                  />
+                </div>
+                <div className="flex align-middle justify-between gap-4">
+                  <label className={per.label_Professional}>Course</label>
+                  <input
+                    className={per.inputExperience}
+                    value={educationList.course}
+                    placeholder="BTech"
+                    onChange={(event) =>
+                      handleEducationChange("course", event.target.value)
+                    }
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className={per.Experience}>
             <div className={per.label}> Experience </div>
             {experienceList.map((exp, index) => (
@@ -244,6 +369,126 @@ export default function Professional_Info() {
                     <div
                       className={per.remove}
                       onClick={() => handleExperienceRemove(index)}
+                    >
+                      -
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className={per.Project}>
+            <div className={per.label}> Projects </div>
+            {projectList.map((exp, index) => (
+              <div key={index}>
+                <div
+                  className={per.input}
+                  // placeholder={exp.companyName}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    fontWeight: "normal",
+                    gap: 12,
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    fontSize: 2,
+                  }}
+                >
+                  <div className="flex flex-col gap-3 justify-between align-middle md:flex-row md:gap-4 ">
+                    <div className="flex  gap-4 justify-between md:justify-start">
+                      <label className={per.label_Professional}>To</label>
+                      <DatePicker
+                        className={per.inputExperience}
+                        selected={exp.startDate}
+                        onChange={(date) =>
+                          handleprojectChange(index, "startDate", date)
+                        }
+                        required
+                      />{" "}
+                    </div>
+                    <div className="flex align-middle gap-4 justify-between md:justify-start">
+                      <label className={per.label_Professional}>From</label>
+                      <DatePicker
+                        className={per.inputExperience}
+                        selected={exp.endDate}
+                        onChange={(date) =>
+                          handleprojectChange(index, "endDate", date)
+                        }
+                        required
+                      />{" "}
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-3 justify-between align-middle md:flex-row md:gap-0">
+                    <div className="flex align-middle justify-between gap-4">
+                      <label className={per.label_Professional}>
+                        Project Title
+                      </label>
+                      <input
+                        className={per.inputExperience}
+                        value={exp.title}
+                        placeholder="Title"
+                        onChange={(event) =>
+                          handleprojectChange(
+                            index,
+                            "title",
+                            event.target.value
+                          )
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="flex align-middle justify-between gap-4 w-fit">
+                      <label className={per.label_Professional}>
+                        Skills Used
+                      </label>
+                      <input
+                        className={per.inputExperience}
+                        value={exp.skills}
+                        style={{ width: 400 }}
+                        placeholder="HTML CSS"
+                        onChange={(event) =>
+                          handleprojectChange(
+                            index,
+                            "skills",
+                            event.target.value
+                          )
+                        }
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="flex align-middle gap-4 justify-between md:justify-start">
+                    <label className={per.label_Professional}>
+                      Project Description
+                    </label>
+                    <textarea
+                      className={per.inputExperience}
+                      rows={3}
+                      value={exp.description}
+                      style={{ width: "80%" }}
+                      placeholder="Description"
+                      onChange={(event) =>
+                        handleprojectChange(
+                          index,
+                          "description",
+                          event.target.value
+                        )
+                      }
+                      required
+                    />
+                  </div>
+                </div>
+                <div className={per.addContainer}>
+                  {projectList.length - 1 === index && (
+                    <div className={per.add} onClick={handleprojectAdd}>
+                      +
+                    </div>
+                  )}
+
+                  {projectList.length !== 1 && (
+                    <div
+                      className={per.remove}
+                      onClick={() => handleprojectRemove(index)}
                     >
                       -
                     </div>

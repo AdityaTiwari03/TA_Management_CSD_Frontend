@@ -34,12 +34,10 @@
   overflow: scroll;
 }
 .id {
-  margin-bottom: 20px;
-  width: 300px;
+  width: 400px;
 }
 .Name,
 .Email {
-  margin-bottom: 20px;
   width: 400px;
 }
 .Phone,
@@ -61,11 +59,13 @@
   background-color: #d9d9d9;
   padding: 10px;
 }
-.Phone1,
-.Phone2,
 .Photo,
 .Resume {
-  width: 300px;
+  width: 400px;
+}
+.Phone1,
+.Phone2 {
+  width: 400px;
 }
 .Designation,
 .Department,
@@ -83,11 +83,18 @@
   padding: 10px 80px;
 }
 .Summary {
+  margin-top: 10px;
   width: 90%;
 }
-.Experience {
+.Experience,
+.Education {
   width: 90%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  margin-top: 30px;
+}
+.Project {
+  margin-top: 0px;
+  width: 90%;
 }
 .label_Professional {
   font-size: medium;
@@ -124,8 +131,9 @@
 .addContainer {
   width: 100%;
   display: flex;
+  flex-direction: row-reverse;
   height: 25px;
-  justify-content: end;
+  justify-content: space-between;
 }
 .add,
 .remove {
@@ -137,6 +145,9 @@
   font-weight: 700;
   color: white;
   cursor: pointer;
+}
+.inputExperience:focus {
+  border-bottom: 2px solid #4a3c8d;
 }
 @media only screen and (max-width: 900px) {
   .Phone,
