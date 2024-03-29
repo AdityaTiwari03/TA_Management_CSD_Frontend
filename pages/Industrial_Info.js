@@ -19,7 +19,17 @@ export default function Industrial_Info() {
   });
   const router = useRouter();
   const { idNumber } = router.query;
+  useEffect(() => {
+    const storedData = sessionStorage.getItem("industrialFormData");
+    if (storedData) {
+      setFormData(JSON.parse(storedData));
+    }
+  }, []);
 
+  // Effect to update sessionStorage when form data changes
+  useEffect(() => {
+    sessionStorage.setItem("industrialFormData", JSON.stringify(formData));
+  }, [formData]);
   const fetchData = async () => {
     try {
       if (idNumber) {

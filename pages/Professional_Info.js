@@ -107,6 +107,38 @@ export default function Professional_Info() {
     list.splice(index, 1);
     setprojectList(list);
   };
+  useEffect(() => {
+    const storedData = sessionStorage.getItem("professionalFormData");
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      Set_Designation(parsedData.Designation);
+      Set_Department(parsedData.Department);
+      setSummary(parsedData.Summary);
+      seteducationList(parsedData.educationList);
+      setExperienceList(parsedData.experienceList);
+      setprojectList(parsedData.projectList);
+    }
+  }, []);
+
+  // Effect to update sessionStorage when form data changes
+  useEffect(() => {
+    const formData = {
+      Designation,
+      Department,
+      Summary,
+      educationList,
+      experienceList,
+      projectList,
+    };
+    sessionStorage.setItem("professionalFormData", JSON.stringify(formData));
+  }, [
+    Designation,
+    Department,
+    Summary,
+    educationList,
+    experienceList,
+    projectList,
+  ]);
 
   // const handleNext = () => {
   //   const data = {};
@@ -114,6 +146,7 @@ export default function Professional_Info() {
 
   const navigateToIndustry = (idNumber) => {
     router.push(`/Industrial_Info?idNumber=${idNumber}`);
+    sessionStorage.setItem;
   };
   const navigateToPersonal = (idNumber) => {
     router.push(`/Personal_Info?idNumber=${idNumber}`);

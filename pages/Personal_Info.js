@@ -7,6 +7,8 @@ import axios from "axios";
 export default function Personal_Info() {
   const router = useRouter();
   const { idNumber } = router.query;
+
+  // Initialize state variables for form data
   const [Email, Set_Email] = useState("");
   const [Ph1, Set_Ph1] = useState("");
   const [Ph2, Set_Ph2] = useState("");
@@ -14,8 +16,8 @@ export default function Personal_Info() {
   const [GitHub, Set_Github] = useState("");
   const [Portfolio, Set_Portfolio] = useState("");
   const [Other, Set_Other] = useState("");
-
-  const [Name, Set_Name] = useState();
+  const [photo, setphoto] = useState();
+  const [Name, Set_Name] = useState("");
   const [ID_Number, Set_ID_Number] = useState(idNumber);
 
   useEffect(() => {
@@ -37,10 +39,41 @@ export default function Personal_Info() {
     fetchData();
   }, [idNumber]);
 
+  // Effect to retrieve form data from sessionStorage on component mount
+  useEffect(() => {
+    const storedData = sessionStorage.getItem("personalFormData");
+    console.log(storedData);
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      Set_Name(parsedData.Name);
+      Set_Email(parsedData.Email);
+      Set_Ph1(parsedData.Ph1);
+      Set_Ph2(parsedData.Ph2);
+      Set_Linkedin(parsedData.Linkedin);
+      Set_Github(parsedData.GitHub);
+      Set_Portfolio(parsedData.Portfolio);
+      Set_Other(parsedData.Other);
+    }
+  }, []);
+
+  // Effect to update sessionStorage when form data changes
+  useEffect(() => {
+    const formData = {
+      Name,
+      Email,
+      Ph1,
+      Ph2,
+      Linkedin,
+      GitHub,
+      Portfolio,
+      Other,
+    };
+    sessionStorage.setItem("personalFormData", JSON.stringify(formData));
+  }, [Name, Email, Ph1, Ph2, Linkedin, GitHub, Portfolio, Other]);
+
   const handleProfessional = () => {
     router.push(`/Professional_Info?idNumber=${idNumber}`);
   };
-
   const handleNext = () => {
     const data = {};
   };
@@ -105,6 +138,9 @@ export default function Personal_Info() {
                 placeholder="Phone Number 2"
                 value={Ph2}
                 type="tel"
+                onChange={(e) => {
+                  Set_Ph2(e.target.value);
+                }}
                 required
               />
             </div>
@@ -119,6 +155,9 @@ export default function Personal_Info() {
                 placeholder="Linkedin URL"
                 value={Linkedin}
                 type="url"
+                onChange={(e) => {
+                  Set_Linkedin(e.target.value);
+                }}
                 required
               />
             </div>
@@ -130,6 +169,9 @@ export default function Personal_Info() {
                 placeholder="Github URL"
                 value={GitHub}
                 type="url"
+                onChange={(e) => {
+                  Set_Github(e.target.value);
+                }}
                 required
               />
             </div>
@@ -142,6 +184,9 @@ export default function Personal_Info() {
                 className={per.input}
                 placeholder="Optional"
                 value={Portfolio}
+                onChange={(e) => {
+                  Set_Portfolio(e.target.value);
+                }}
                 type="url"
               />
             </div>
@@ -152,6 +197,9 @@ export default function Personal_Info() {
                 className={per.input}
                 placeholder="Optional"
                 value={Other}
+                onChange={(e) => {
+                  Set_Other(e.target.value);
+                }}
                 type="url"
                 required
               />
@@ -165,6 +213,10 @@ export default function Personal_Info() {
                 className={per.input}
                 placeholder="Upload Photo"
                 type="file"
+                value={photo}
+                onChange={(e) => {
+                  setphoto(e.target.files);
+                }}
               />
             </div>
             <div className={per.Phone2}>
