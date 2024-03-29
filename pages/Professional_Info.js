@@ -10,13 +10,13 @@ export default function Professional_Info() {
   const [Designation, Set_Designation] = useState("");
   const [Department, Set_Department] = useState("");
   const [Summary, setSummary] = useState("");
-  const [educationList, seteducationList] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-    collegeName: "",
-    branch: "",
-    course: "",
-  });
+  // const [educationList, seteducationList] = useState({
+  //   startDate: new Date(),
+  //   endDate: new Date(),
+  //   collegeName: "",
+  //   branch: "",
+  //   course: "",
+  // });
   const [experienceList, setExperienceList] = useState([
     {
       startDate: new Date(),
@@ -66,11 +66,11 @@ export default function Professional_Info() {
     setprojectList(list);
   };
 
-  const handleEducationChange = (field, value) => {
-    const list = [...educationList];
-    list[field] = value;
-    seteducationList(list);
-  };
+  // const handleEducationChange = (field, value) => {
+  //   const list = [...educationList];
+  //   list[field] = value;
+  //   seteducationList(list);
+  // };
   const handleExperienceAdd = () => {
     setExperienceList([
       ...experienceList,
@@ -203,7 +203,7 @@ export default function Professional_Info() {
                   <label className={per.label_Professional}>To</label>
                   <DatePicker
                     className={per.inputExperience}
-                    selected={educationList.startDate}
+                    // selected={educationList.startDate}
                     onChange={(date) =>
                       handleExperienceChange("startDate", date)
                     }
@@ -214,13 +214,13 @@ export default function Professional_Info() {
                   <label className={per.label_Professional}>From</label>
                   <DatePicker
                     className={per.inputExperience}
-                    selected={educationList.endDate}
+                    // selected={educationList.endDate}
                     onChange={(date) => handleExperienceChange("endDate", date)}
                     required
                   />{" "}
                 </div>
               </div>
-              <div className="flex align-middle gap-4 justify-between md:justify-start">
+              {/* <div className="flex align-middle gap-4 justify-between md:justify-start">
                 <label className={per.label_Professional}>College Name</label>
                 <input
                   className={per.inputExperience}
@@ -232,13 +232,13 @@ export default function Professional_Info() {
                   }
                   required
                 />
-              </div>
+              </div> */}
               <div className="flex flex-col gap-3 justify-between align-middle md:flex-row md:gap-0">
                 <div className="flex align-middle justify-between gap-4 w-84">
                   <label className={per.label_Professional}>Branch</label>
                   <input
                     className={per.inputExperience}
-                    value={educationList.branch}
+                    // value={educationList.branch}
                     style={{ width: 300 }}
                     placeholder="Computer Science and Engineering"
                     onChange={(event) =>
@@ -251,7 +251,7 @@ export default function Professional_Info() {
                   <label className={per.label_Professional}>Course</label>
                   <input
                     className={per.inputExperience}
-                    value={educationList.course}
+                    // value={educationList.course}
                     placeholder="BTech"
                     onChange={(event) =>
                       handleEducationChange("course", event.target.value)

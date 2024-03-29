@@ -40,7 +40,7 @@ export default function Industrial_Info() {
     router.push(`/Professional_Info?idNumber=${idNumber}`);
   };
   const navigateToTADashboard = () => {
-    router.push("/dasboard/student");
+    router.push("/TA/course_feed");
   };
   const handleNext = async (e) => {
     e.preventDefault();

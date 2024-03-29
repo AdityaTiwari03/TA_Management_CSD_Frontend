@@ -24,7 +24,7 @@ export default function Sign_In() {
   };
 
   const navigateToTADashboard = () => {
-    router.push("/dasboard/student");
+    router.push("/TA/course_feed");
   };
 
   const handleSubmit = async (event) => {
@@ -44,10 +44,11 @@ export default function Sign_In() {
       );
       if (resp.data.statusCode === 200 && resp.data.success) {
         localStorage.setItem("idNumber", ID_Number);
+        localStorage.setItem("_id", resp.data.data.user._id);
         const userFormStatus = await axios.get(
           `http://localhost:8000/api/v1/users/form/status?idNumber=${resp.data.data.user.idNumber}`
         );
-        console.log(resp.data.data.user.isUserInfoSaved);
+        console.log(resp.data.data.user);
         if (
           userFormStatus.data.statusCode === 200 &&
           !userFormStatus.data.data.isUserInfoSaved && !resp.data.data.user.isUserInfoSaved
