@@ -45,7 +45,10 @@ export default function Professional_Info() {
         const response = await axios.get(
           `http://localhost:8000/api/v1/users/info/?idNumber=${idNumber}`
         );
+        console.log("/////////////////////////////////////////////");
         console.log(response.data);
+        console.log("/////////////////////////////////////////////");
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -53,7 +56,7 @@ export default function Professional_Info() {
     if (idNumber) {
       fetchData();
     }
-  }, [idNumber]);
+  }, []);
 
   const handleExperienceChange = (index, field, value) => {
     const list = [...experienceList];
@@ -114,7 +117,7 @@ export default function Professional_Info() {
       Set_Designation(parsedData.Designation);
       Set_Department(parsedData.Department);
       setSummary(parsedData.Summary);
-      seteducationList(parsedData.educationList);
+      // seteducationList(parsedData.educationList);
       setExperienceList(parsedData.experienceList);
       setprojectList(parsedData.projectList);
     }
@@ -126,7 +129,7 @@ export default function Professional_Info() {
       Designation,
       Department,
       Summary,
-      educationList,
+      // educationList,
       experienceList,
       projectList,
     };
@@ -135,7 +138,7 @@ export default function Professional_Info() {
     Designation,
     Department,
     Summary,
-    educationList,
+    // educationList,
     experienceList,
     projectList,
   ]);
@@ -155,6 +158,13 @@ export default function Professional_Info() {
     console.log(idNumber);
     e.preventDefault();
     try {
+      const resp = await axios.get(
+        `http://localhost:8000/api/v1/users/Professional_Info_status/?idNumber=${idNumber}`
+      );
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    try {
       const data = {
         idNumber: idNumber,
         designation: Designation,
@@ -164,7 +174,7 @@ export default function Professional_Info() {
       };
       console.log(data);
       const resp = await axios.post(
-        "http://localhost:8000/api/v1/users/Professional_Info",
+        `http://localhost:8000/api/v1/users//update/?idNumber=${idNumber} `,
         data
       );
       console.log(resp.data);
