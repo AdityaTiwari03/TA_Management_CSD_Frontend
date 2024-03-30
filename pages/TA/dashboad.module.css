@@ -1,0 +1,54 @@
+.whitebox {
+  margin: 20px;
+  align-self: flex-start;
+  height: 85%;
+  width: 90%;
+  border-radius: 30px;
+  background-color: white;
+  padding: 15px 60px;
+  overflow: scroll;
+}
+.photo {
+  width: 50%;
+  padding: 30px 10px;
+  display: flex;
+  justify-content: center;
+}
+.img {
+  border-radius: 10%;
+}
+.info {
+  width: 50%;
+  color: #4a3c8d;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.Ta_name {
+  font-size: xx-large;
+  font-weight: 600;
+}
+.Ta_des {
+  font-size: larger;
+  font-weight: 550;
+}
+.Approve {
+  border-radius: 20px;
+  background-color: green;
+  color: white;
+  font-weight: 600;
+  padding: 5px 20px;
+  width: fit-content;
+  margin: auto;
+  margin-top: 30px;
+}
+.container {
+  width: 45%;
+  display: block;
+}
+.head {
+  font-size: x-large;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #4a3c8d;
+}
