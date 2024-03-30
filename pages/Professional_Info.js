@@ -10,13 +10,6 @@ export default function Professional_Info() {
   const [Designation, Set_Designation] = useState("");
   const [Department, Set_Department] = useState("");
   const [Summary, setSummary] = useState("");
-  // const [educationList, seteducationList] = useState({
-  //   startDate: new Date(),
-  //   endDate: new Date(),
-  //   collegeName: "",
-  //   branch: "",
-  //   course: "",
-  // });
   const [experienceList, setExperienceList] = useState([
     {
       startDate: new Date(),
@@ -26,7 +19,6 @@ export default function Professional_Info() {
       post: "",
     },
   ]);
-
   const [projectList, setprojectList] = useState([
     {
       startDate: new Date(),
@@ -36,27 +28,10 @@ export default function Professional_Info() {
       description: "",
     },
   ]);
+  
   const router = useRouter();
   const { idNumber } = router.query;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/api/v1/users/info/?idNumber=${idNumber}`
-        );
-        console.log("/////////////////////////////////////////////");
-        console.log(response.data);
-        console.log("/////////////////////////////////////////////");
-
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    if (idNumber) {
-      fetchData();
-    }
-  }, []);
 
   const handleExperienceChange = (index, field, value) => {
     const list = [...experienceList];
@@ -68,12 +43,6 @@ export default function Professional_Info() {
     list[index][field] = value;
     setprojectList(list);
   };
-
-  // const handleEducationChange = (field, value) => {
-  //   const list = [...educationList];
-  //   list[field] = value;
-  //   seteducationList(list);
-  // };
   const handleExperienceAdd = () => {
     setExperienceList([
       ...experienceList,
@@ -86,7 +55,6 @@ export default function Professional_Info() {
       },
     ]);
   };
-
   const handleExperienceRemove = (index) => {
     const list = [...experienceList];
     list.splice(index, 1);
@@ -104,12 +72,19 @@ export default function Professional_Info() {
       },
     ]);
   };
-
   const handleprojectRemove = (index) => {
     const list = [...projectList];
     list.splice(index, 1);
     setprojectList(list);
   };
+
+  const navigateToIndustry = (idNumber) => {
+    router.push(`/Industrial_Info?idNumber=${idNumber}`);
+  };
+  const navigateToPersonal = (idNumber) => {
+    router.push(`/Personal_Info?idNumber=${idNumber}`);
+  };
+
   useEffect(() => {
     const storedData = sessionStorage.getItem("professionalFormData");
     if (storedData) {
@@ -122,8 +97,6 @@ export default function Professional_Info() {
       setprojectList(parsedData.projectList);
     }
   }, []);
-
-  // Effect to update sessionStorage when form data changes
   useEffect(() => {
     const formData = {
       Designation,
@@ -143,27 +116,8 @@ export default function Professional_Info() {
     projectList,
   ]);
 
-  // const handleNext = () => {
-  //   const data = {};
-  // };
-
-  const navigateToIndustry = (idNumber) => {
-    router.push(`/Industrial_Info?idNumber=${idNumber}`);
-    sessionStorage.setItem;
-  };
-  const navigateToPersonal = (idNumber) => {
-    router.push(`/Personal_Info?idNumber=${idNumber}`);
-  };
   const handleIndustry = async (e) => {
-    console.log(idNumber);
     e.preventDefault();
-    try {
-      const resp = await axios.get(
-        `http://localhost:8000/api/v1/users/Professional_Info_status/?idNumber=${idNumber}`
-      );
-    } catch (error) {
-      console.error("Error:", error);
-    }
     try {
       const data = {
         idNumber: idNumber,
@@ -171,13 +125,12 @@ export default function Professional_Info() {
         department: Department,
         experience: experienceList,
         profileSummary: Summary,
+        _id : localStorage.getItem("_id")
       };
-      console.log(data);
       const resp = await axios.post(
-        `http://localhost:8000/api/v1/users//update/?idNumber=${idNumber} `,
+        `http://localhost:8000/api/v1/users/Professional_Info/?idNumber=${idNumber} `,
         data
       );
-      console.log(resp.data);
       if (resp.data.statusCode === 200 && resp.data.success) {
         navigateToIndustry(idNumber);
       }
@@ -186,7 +139,6 @@ export default function Professional_Info() {
     }
   };
   const handlePersonal = () => {
-    console.log(idNumber);
     navigateToPersonal(idNumber);
   };
 
@@ -263,19 +215,6 @@ export default function Professional_Info() {
                   />{" "}
                 </div>
               </div>
-              {/* <div className="flex align-middle gap-4 justify-between md:justify-start">
-                <label className={per.label_Professional}>College Name</label>
-                <input
-                  className={per.inputExperience}
-                  value={educationList.collegeName}
-                  style={{ width: "80%" }}
-                  placeholder="IIT Bhilai"
-                  onChange={(event) =>
-                    handleEducationChange("collegeName", event.target.value)
-                  }
-                  required
-                />
-              </div> */}
               <div className="flex flex-col gap-3 justify-between align-middle md:flex-row md:gap-0">
                 <div className="flex align-middle justify-between gap-4 w-84">
                   <label className={per.label_Professional}>Branch</label>

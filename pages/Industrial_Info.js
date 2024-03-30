@@ -17,34 +17,29 @@ export default function Industrial_Info() {
     publications: [""],
     patents: [""],
   });
+  
   const router = useRouter();
   const { idNumber } = router.query;
-  useEffect(() => {
-    const storedData = sessionStorage.getItem("industrialFormData");
-    if (storedData) {
-      setFormData(JSON.parse(storedData));
-    }
-  }, []);
 
-  // Effect to update sessionStorage when form data changes
-  useEffect(() => {
-    sessionStorage.setItem("industrialFormData", JSON.stringify(formData));
-  }, [formData]);
-  const fetchData = async () => {
-    try {
-      if (idNumber) {
-        const response = await axios.get(
-          `http://localhost:8000/api/v1/users/info/?idNumber=${idNumber}`
-        );
-        console.log(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+  const handleInputChange = (field, index, value) => {
+    const data = { ...formData };
+    data[field][index] = value;
+    setFormData(data);
+  };
+  const handleAddInput = (field) => {
+    if (formData[field].length < 2) {
+      const data = { ...formData };
+      data[field].push("");
+      setFormData(data);
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, [idNumber]);
+  const handleRemoveInput = (field, index) => {
+    if (formData[field].length > 1) {
+      const data = { ...formData };
+      data[field].splice(index, 1);
+      setFormData(data);
+    }
+  };
 
   const handleProfessional = async () => {
     router.push(`/Professional_Info?idNumber=${idNumber}`);
@@ -66,15 +61,13 @@ export default function Industrial_Info() {
         hardwareTools: formData.hardwareTools,
         publications: formData.publications,
         patents: formData.patents,
+        _id: localStorage.getItem("_id"), 
       };
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/users/Industrial_Info`,
+        `http://localhost:8000/api/v1/users/Industrial_Info?idNumber=${idNumber}`,
         data
       );
-
-      console.log(response.data);
-
       if (response.data.statusCode === 200 && response.data.success) {
         navigateToTADashboard();
       }
@@ -83,31 +76,17 @@ export default function Industrial_Info() {
     }
   };
 
-  const handleInputChange = (field, index, value) => {
-    const data = { ...formData };
-    data[field][index] = value;
-    setFormData(data);
-  };
-
-  const handleAddInput = (field) => {
-    if (formData[field].length < 2) {
-      const data = { ...formData };
-      data[field].push("");
-      setFormData(data);
+  useEffect(() => {
+    const storedData = sessionStorage.getItem("industrialFormData");
+    if (storedData) {
+      setFormData(JSON.parse(storedData));
     }
-  };
+  }, []);
+  // Effect to update sessionStorage when form data changes
+  useEffect(() => {
+    sessionStorage.setItem("industrialFormData", JSON.stringify(formData));
+  }, [formData]);
 
-  const handleRemoveInput = (field, index) => {
-    if (formData[field].length > 1) {
-      const data = { ...formData };
-      data[field].splice(index, 1);
-      setFormData(data);
-    }
-  };
-
-  // const handleSubmit = () => {
-  //   console.log(formData);
-  // };
   return (
     <TALayout>
       <div className="main">
