@@ -32,6 +32,8 @@ export default function Sign_In() {
     event.preventDefault();
     console.log("ID Number:", ID_Number);
     console.log("Password:", password);
+    console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
+
     const data = {
       idNumber: ID_Number,
       password: password,
@@ -39,14 +41,14 @@ export default function Sign_In() {
 
     try {
       const resp = await axios.post(
-        "http://localhost:8000/api/v1/users/login",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/login`,
         data
       );
       if (resp.data.statusCode === 200 && resp.data.success) {
         localStorage.setItem("idNumber", ID_Number);
         localStorage.setItem("_id", resp.data.data.user._id);
         const userFormStatus = await axios.get(
-          `http://localhost:8000/api/v1/users/form/status?idNumber=${resp.data.data.user.idNumber}`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/form/status?idNumber=${resp.data.data.user.idNumber}`
         );
         console.log(resp.data.data.user);
         if (

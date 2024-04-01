@@ -65,7 +65,7 @@ export default function Industrial_Info() {
       };
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/users/Industrial_Info?idNumber=${idNumber}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/Industrial_Info?idNumber=${idNumber}`,
         data
       );
       if (response.data.statusCode === 200 && response.data.success) {

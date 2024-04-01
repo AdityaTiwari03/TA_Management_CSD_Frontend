@@ -128,7 +128,7 @@ export default function Professional_Info() {
         _id : localStorage.getItem("_id")
       };
       const resp = await axios.post(
-        `http://localhost:8000/api/v1/users/Professional_Info/?idNumber=${idNumber} `,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/Professional_Info/?idNumber=${idNumber} `,
         data
       );
       if (resp.data.statusCode === 200 && resp.data.success) {

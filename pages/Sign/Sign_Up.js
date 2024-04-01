@@ -69,7 +69,7 @@ export default function Sign_Up() {
         // Make post request
         try {
           const resp = await axios.post(
-            "http://localhost:8000/api/v1/users/register",
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/register`,
             data
           );
           if (resp.data.statusCode === 200 && resp.data.success) {
