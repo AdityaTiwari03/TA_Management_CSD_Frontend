@@ -136,14 +136,14 @@ export default function Dashboard(ta) {
         
         console.log(idNumber);
         const resp2 = await axios.get(
-          `http://localhost:8000/api/v1/users/info/?idNumber=${idNumber} `
+          `https://ta-backend-new.vercel.app/api/v1/users/info/?idNumber=${idNumber} `
         );
         set_TA_Name(resp2.data.data.firstName + " " + resp2.data.data.lastName);
         set_TA_Email(resp2.data.data.email);
         set_TA_Mobile(resp2.data.data.phone);
         set_TA_ID(resp2.data.data.idNumber);
         const resp = await axios.get(
-          `http://localhost:8000/api/v1/users/Professional_Info_status/?idNumber=${idNumber} `
+          `https://ta-backend-new.vercel.app/api/v1/users/Professional_Info_status/?idNumber=${idNumber} `
         );
         set_TA_Department(resp.data.data.userInfo.department || "EECS");
         set_TA_Info({
