@@ -136,7 +136,7 @@ export default function Dashboard(ta) {
       const resp2 = await axios.get(
         `https://ta-backend-new.vercel.app/api/v1/users/info/?idNumber=${idNumber} `
       );
-      set_TA_Name(resp2.data.data.firstName + " " + resp2.data.data.lastName);
+      set_TA_Name(resp2.data.data.firstName[0].toUpperCase() +resp2.data.data.firstName.slice(1)  + " " + resp2.data.data.lastName[0].toUpperCase() +resp2.data.data.firstName.slice(1) );
       set_TA_Email(resp2.data.data.email);
       set_TA_Mobile(resp2.data.data.phone);
       set_TA_ID(resp2.data.data.idNumber);
@@ -144,17 +144,19 @@ export default function Dashboard(ta) {
         `https://ta-backend-new.vercel.app/api/v1/users/Professional_Info_status/?idNumber=${idNumber} `
       );
       set_TA_Department(resp.data.data.userInfo.department || "EECS");
+      console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+      console.log(resp.data.data.userInfo.areaOfSpecilisation)
       set_TA_Info({
         ...TA_info,
-        areaOfSpecialisation: resp2.data.data.userInfo.areaOfSpecialisation,
-        primarySkills: resp2.data.data.userInfo.primarySkills,
-        secondarySkills: resp2.data.data.userInfo.secondarySkills,
-        primaryProgrammingSkills: resp2.data.data.userInfo.primaryProgrammingSkills,
-        secondaryProgrammingSkills: resp2.data.data.userInfo.secondaryProgrammingSkills,
-        softwareTools: resp2.data.data.userInfo.softwareTools,
-        hardwareTools: resp2.data.data.userInfo.hardwareTools,
-        publications: resp2.data.data.userInfo.publications,
-        patents: resp2.data.data.userInfo.patents,
+        areaOfSpecialisation: resp.data.data.userInfo.areaOfSpecilisation,
+        primarySkills: resp.data.data.userInfo.primarySkills,
+        secondarySkills: resp.data.data.userInfo.secondarySkills,
+        primaryProgrammingSkills: resp.data.data.userInfo.primaryProgrammingSkills,
+        secondaryProgrammingSkills: resp.data.data.userInfo.secondaryProgrammingSkills,
+        softwareTools: resp.data.data.userInfo.softwareTools,
+        hardwareTools: resp.data.data.userInfo.hardwareTools,
+        publications: resp.data.data.userInfo.publications,
+        patents: resp.data.data.userInfo.patents,
       });
       // const newProjects = resp2.data.data.userInfo.experience.map((exp) => ({
       //   startDate: new Date(exp.from),

@@ -74,9 +74,6 @@ export default function Personal_Info() {
   const handleProfessional = () => {
     router.push(`/Professional_Info?idNumber=${idNumber}`);
   };
-  const handleNext = () => {
-    const data = {};
-  };
   return (
     <TALayout>
       <div className="main">
