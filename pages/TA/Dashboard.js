@@ -136,7 +136,7 @@ export default function Dashboard(ta) {
       const resp2 = await axios.get(
         `https://ta-backend-new.vercel.app/api/v1/users/info/?idNumber=${idNumber} `
       );
-      set_TA_Name(resp2.data.data.firstName[0].toUpperCase() +resp2.data.data.firstName.slice(1)  + " " + resp2.data.data.lastName[0].toUpperCase() +resp2.data.data.firstName.slice(1) );
+      set_TA_Name(resp2.data.data.firstName[0].toUpperCase() +resp2.data.data.firstName.slice(1)  + " " + resp2.data.data.lastName[0].toUpperCase() +resp2.data.data.lastName.slice(1) );
       set_TA_Email(resp2.data.data.email);
       set_TA_Mobile(resp2.data.data.phone);
       set_TA_ID(resp2.data.data.idNumber);
