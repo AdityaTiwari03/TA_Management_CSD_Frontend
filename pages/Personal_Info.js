@@ -24,7 +24,7 @@ export default function Personal_Info() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/info/?idNumber=${id}`
+          `https://ta-backend-new.vercel.app/api/v1/users/info/?idNumber=${id}`
         );
         Set_Name(
           response.data.data.firstName + " " + response.data.data.lastName

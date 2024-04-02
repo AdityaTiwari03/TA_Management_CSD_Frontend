@@ -65,7 +65,7 @@ export default function Industrial_Info() {
       };
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/Industrial_Info?idNumber=${idNumber}`,
+        `https://ta-backend-new.vercel.app/api/v1/users/Industrial_Info?idNumber=${idNumber}`,
         data
       );
       if (response.data.statusCode === 200 && response.data.success) {
