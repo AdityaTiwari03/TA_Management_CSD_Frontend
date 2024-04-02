@@ -9,9 +9,7 @@ export default function Topbar() {
   return (
     <Nav activeKey="/home" className={tb.topb} justify>
       <Nav.Item className={tb.nav}>
-      {/* <Nav.Link href="TA/Dasboard">
         <Image src={iitbhilai} style={{ width: 50, marginRight: 150 }} />
-      </Nav.Link> */}
         <Nav.Item className={tb.nav}>
           <Nav.Link href="/TA/course_feed" className={tb.navbuttons}>
             Course Feed
