@@ -11,7 +11,7 @@ import axios from "axios";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 export default function Dashboard(ta) {
   const router = useRouter();
-  const { idNumber } = router.query;
+  const { idNumber } = router.query || localStorage.getItem("idNumber");
   ta = true;
   const [TA_Name, set_TA_Name] = useState("");
   const [TA_ID, set_TA_ID] = useState("");
@@ -32,22 +32,22 @@ export default function Dashboard(ta) {
   });
   const [experienceList, setExperienceList] = useState([
     {
-      startDate: new Date("2022-06-15"),
-      endDate: new Date("2023-09-20"),
+      startDate: new Date("2022-06-06"),
+      endDate: new Date("2023-06-06"),
       companyName: "TechSolutions Inc.",
       industry: "Information Technology",
       post: "Software Engineer",
     },
     {
-      startDate: new Date("2020-12-10"),
-      endDate: new Date("2022-02-28"),
+      startDate: new Date("2022-06-06"),
+      endDate: new Date("2023-06-06"),
       companyName: "Global Finance Group",
       industry: "Finance",
       post: "Financial Analyst",
     },
     {
-      startDate: new Date("2019-04-05"),
-      endDate: new Date("2021-08-15"),
+      startDate: new Date("2022-06-06"),
+      endDate: new Date("2023-06-06"),
       companyName: "HealthCare Innovations",
       industry: "Healthcare",
       post: "Research Scientist",
@@ -55,22 +55,22 @@ export default function Dashboard(ta) {
   ]);
   [
     {
-      startDate: new Date("2015-08-01"),
-      endDate: new Date("2017-05-01"),
+      startDate: new Date("2022-06-06"),
+      endDate: new Date("2023-06-06"),
       collegeName: "XYZ Higher Secondary School",
       branch: "Science",
       course: "Higher Secondary",
     },
     {
-      startDate: new Date("2017-08-01"),
-      endDate: new Date("2021-05-01"),
+      startDate: new Date("2022-06-06"),
+      endDate: new Date("2023-06-06"),
       collegeName: "ABC College of Engineering",
       branch: "Computer Science",
       course: "B.Tech",
     },
     {
-      startDate: new Date("2021-08-01"),
-      endDate: new Date("2023-05-01"),
+      startDate: new Date("2022-06-06"),
+      endDate: new Date("2023-06-06"),
       collegeName: "DEF Institute of Technology",
       branch: "Data Science",
       course: "M.Tech",
@@ -78,22 +78,22 @@ export default function Dashboard(ta) {
   ];
   const [TA_Education, set_TA_Education] = useState([
     {
-      startDate: new Date("2015-08-01"),
-      endDate: new Date("2017-05-01"),
+      startDate: new Date("2022-06-06"),
+      endDate: new Date("2023-06-06"),
       collegeName: "XYZ Higher Secondary School",
       branch: "Science",
       course: "Higher Secondary",
     },
     {
-      startDate: new Date("2017-08-01"),
-      endDate: new Date("2021-05-01"),
+      startDate: new Date("2022-06-06"),
+      endDate: new Date("2023-06-06"),
       collegeName: "ABC College of Engineering",
       branch: "Computer Science",
       course: "B.Tech",
     },
     {
-      startDate: new Date("2021-08-01"),
-      endDate: new Date("2023-05-01"),
+      startDate: new Date("2022-06-06"),
+      endDate: new Date("2023-06-06"),
       collegeName: "DEF Institute of Technology",
       branch: "Data Science",
       course: "M.Tech",
@@ -101,24 +101,24 @@ export default function Dashboard(ta) {
   ]);
   const [project_List, set_Project_List] = useState([
     {
-      startDate: new Date("2024-03-15T00:00:00.000Z"),
-      endDate: new Date("2024-04-10T00:00:00.000Z"),
+      startDate: new Date("2024-03-03T00:00:00.000Z"),
+      endDate: new Date("2024-03-03T00:00:00.000Z"),
       title: "Website Redesign",
       skills: "UI/UX Design, HTML, CSS, JavaScript",
       description:
         "Redesigning the company website to improve user experience and modernize the design.",
     },
     {
-      startDate: new Date("2024-03-20T00:00:00.000Z"),
-      endDate: new Date("2024-04-05T00:00:00.000Z"),
+      startDate: new Date("2024-03-03T00:00:00.000Z"),
+      endDate: new Date("2024-03-03T00:00:00.000Z"),
       title: "Mobile App Development",
       skills: "React Native, Firebase, API Integration",
       description:
         "Developing a mobile application for both iOS and Android platforms to facilitate easy access to our services.",
     },
     {
-      startDate: new Date("2024-03-10T00:00:00.000Z"),
-      endDate: new Date("2024-04-15T00:00:00.000Z"),
+      startDate: new Date("2024-03-03T00:00:00.000Z"),
+      endDate: new Date("2024-03-03T00:00:00.000Z"),
       title: "Data Analysis Project",
       skills: "Python, Pandas, NumPy, Data Visualization",
       description:
@@ -129,50 +129,54 @@ export default function Dashboard(ta) {
   const [GitHub, Set_Github] = useState("github");
   const [Portfolio, Set_Portfolio] = useState("portfolio");
   const [Other, Set_Other] = useState("otherlink");
-
+  const fetchData = async (idNumber) => {
+    try {
+      
+      console.log(idNumber);
+      const resp2 = await axios.get(
+        `https://ta-backend-new.vercel.app/api/v1/users/info/?idNumber=${idNumber} `
+      );
+      set_TA_Name(resp2.data.data.firstName + " " + resp2.data.data.lastName);
+      set_TA_Email(resp2.data.data.email);
+      set_TA_Mobile(resp2.data.data.phone);
+      set_TA_ID(resp2.data.data.idNumber);
+      const resp = await axios.get(
+        `https://ta-backend-new.vercel.app/api/v1/users/Professional_Info_status/?idNumber=${idNumber} `
+      );
+      set_TA_Department(resp.data.data.userInfo.department || "EECS");
+      set_TA_Info({
+        ...TA_info,
+        areaOfSpecialisation: resp2.data.data.userInfo.areaOfSpecialisation,
+        primarySkills: resp2.data.data.userInfo.primarySkills,
+        secondarySkills: resp2.data.data.userInfo.secondarySkills,
+        primaryProgrammingSkills: resp2.data.data.userInfo.primaryProgrammingSkills,
+        secondaryProgrammingSkills: resp2.data.data.userInfo.secondaryProgrammingSkills,
+        softwareTools: resp2.data.data.userInfo.softwareTools,
+        hardwareTools: resp2.data.data.userInfo.hardwareTools,
+        publications: resp2.data.data.userInfo.publications,
+        patents: resp2.data.data.userInfo.patents,
+      });
+      // const newProjects = resp2.data.data.userInfo.experience.map((exp) => ({
+      //   startDate: new Date(exp.from),
+      //   endDate: new Date(exp.to),
+      //   companyName: exp.companyName,
+      //   industry: exp.industry,
+      //   post: exp.designation,
+      // }));
+      // setExperienceList(newProjects);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        
-        console.log(idNumber);
-        const resp2 = await axios.get(
-          `https://ta-backend-new.vercel.app/api/v1/users/info/?idNumber=${idNumber} `
-        );
-        set_TA_Name(resp2.data.data.firstName + " " + resp2.data.data.lastName);
-        set_TA_Email(resp2.data.data.email);
-        set_TA_Mobile(resp2.data.data.phone);
-        set_TA_ID(resp2.data.data.idNumber);
-        const resp = await axios.get(
-          `https://ta-backend-new.vercel.app/api/v1/users/Professional_Info_status/?idNumber=${idNumber} `
-        );
-        set_TA_Department(resp.data.data.userInfo.department || "EECS");
-        set_TA_Info({
-          ...TA_info,
-          areaOfSpecialisation: resp2.data.data.userInfo.areaOfSpecialisation,
-          primarySkills: resp2.data.data.userInfo.primarySkills,
-          secondarySkills: resp2.data.data.userInfo.secondarySkills,
-          primaryProgrammingSkills: resp2.data.data.userInfo.primaryProgrammingSkills,
-          secondaryProgrammingSkills: resp2.data.data.userInfo.secondaryProgrammingSkills,
-          softwareTools: resp2.data.data.userInfo.softwareTools,
-          hardwareTools: resp2.data.data.userInfo.hardwareTools,
-          publications: resp2.data.data.userInfo.publications,
-          patents: resp2.data.data.userInfo.patents,
-        });
-        const newProjects = resp2.data.data.userInfo.experience.map((exp) => ({
-          startDate: new Date(exp.from),
-          endDate: new Date(exp.to),
-          companyName: exp.companyName,
-          industry: exp.industry,
-          post: exp.designation,
-        }));
-        // setExperienceList(newProjects);
-        
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
+    if (idNumber) {
+      console.log("Fetching data for idNumber:", idNumber);
+      fetchData(idNumber);
+    } else {
+      console.log("idNumber is undefined");
+    }
+  }, [idNumber]);
 
   return (
     <TALayout>
