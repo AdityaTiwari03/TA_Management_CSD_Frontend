@@ -41,7 +41,7 @@ export default function Sign_In() {
 
     try {
       const resp = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/login`,
+        `https://ta-backend-new.vercel.app/api/v1/users/login`,
         data
       );
       if (resp.data.statusCode === 200 && resp.data.success) {
