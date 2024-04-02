@@ -23,8 +23,8 @@ export default function Sign_In() {
     router.push(`/Professional_Info?idNumber=${idNumber}`);
   };
 
-  const navigateToTADashboard = () => {
-    router.push("/TA/course_feed");
+  const navigateToTADashboard = (idNumber) => {
+    router.push(`/TA/Dashboard?idNumber=${idNumber}`);
   };
 
   const handleSubmit = async (event) => {
@@ -41,23 +41,24 @@ export default function Sign_In() {
 
     try {
       const resp = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/login`,
+        `http://localhost:8000/api/v1/users/login`,
         data
       );
       if (resp.data.statusCode === 200 && resp.data.success) {
         localStorage.setItem("idNumber", ID_Number);
         localStorage.setItem("_id", resp.data.data.user._id);
         const userFormStatus = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/users/form/status?idNumber=${resp.data.data.user.idNumber}`
+          `http://localhost:8000/api/v1/users/form/status?idNumber=${resp.data.data.user.idNumber}`
         );
         console.log(resp.data.data.user);
         if (
           userFormStatus.data.statusCode === 200 &&
-          !userFormStatus.data.data.isUserInfoSaved && !resp.data.data.user.isUserInfoSaved
+          !userFormStatus.data.data.isUserInfoSaved &&
+          !resp.data.data.user.isUserInfoSaved
         ) {
           navigateToAboutPage(resp.data.data.user.idNumber);
         } else {
-          navigateToTADashboard();
+          navigateToTADashboard(resp.data.data.user.idNumber);
         }
       }
     } catch (error) {

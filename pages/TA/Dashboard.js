@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TALayout from "./layout";
 import dashboard from "./dashboad.module.css";
 import img from "../../public/images.jpg";
@@ -6,31 +6,29 @@ import Image from "next/image";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import { useRouter } from "next/router";
+import axios from "axios";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 export default function Dashboard(ta) {
+  const router = useRouter();
+  const { idNumber } = router.query;
   ta = true;
-  const [TA_Name, set_TA_Name] = useState("Ahana Singla");
-  const [TA_ID, set_TA_ID] = useState("12140090");
-  const [TA_Email, set_TA_Email] = useState("aadi.tiwari0208@gmail.com");
-  const [TA_Mobile, set_TA_Mobile] = useState("1234567890");
+  const [TA_Name, set_TA_Name] = useState("");
+  const [TA_ID, set_TA_ID] = useState("");
+  const [TA_Email, set_TA_Email] = useState("");
+  const [TA_Mobile, set_TA_Mobile] = useState("");
   const [TA_Status, set_TA_Status] = useState("Pending");
-  const [TA_Department, set_TA_Department] = useState("EECS");
+  const [TA_Department, set_TA_Department] = useState("");
   const [TA_info, set_TA_Info] = useState({
-    areaOfSpecialisation: ["Artificial Intelligence", "Computer Vision"],
-    primarySkills: ["Machine Learning", "Data Analysis"],
-    secondarySkills: ["Natural Language Processing", "Image Processing"],
-    primaryProgrammingSkills: ["Python", "R"],
-    secondaryProgrammingSkills: ["Java", "C++"],
-    softwareTools: ["TensorFlow", "PyTorch"],
-    hardwareTools: ["Raspberry Pi", "Arduino"],
-    publications: [
-      "A Novel Approach to Image Segmentation using Deep Learning",
-      "Sentiment Analysis on Social Media Data: Trends and Insights",
-    ],
-    patents: [
-      "Method and System for Autonomous Navigation of Unmanned Aerial Vehicles",
-      "Smart Home System with Enhanced Energy Efficiency Algorithms",
-    ],
+    areaOfSpecialisation: [""],
+    primarySkills: [""],
+    secondarySkills: [""],
+    primaryProgrammingSkills: [""],
+    secondaryProgrammingSkills: [""],
+    softwareTools: [""],
+    hardwareTools: [""],
+    publications: [""],
+    patents: [""],
   });
   const [experienceList, setExperienceList] = useState([
     {
@@ -131,6 +129,50 @@ export default function Dashboard(ta) {
   const [GitHub, Set_Github] = useState("github");
   const [Portfolio, Set_Portfolio] = useState("portfolio");
   const [Other, Set_Other] = useState("otherlink");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        console.log(idNumber);
+        const resp2 = await axios.get(
+          `http://localhost:8000/api/v1/users/info/?idNumber=${idNumber} `
+        );
+        set_TA_Name(resp2.data.data.firstName + " " + resp2.data.data.lastName);
+        set_TA_Email(resp2.data.data.email);
+        set_TA_Mobile(resp2.data.data.phone);
+        set_TA_ID(resp2.data.data.idNumber);
+        const resp = await axios.get(
+          `http://localhost:8000/api/v1/users/Professional_Info_status/?idNumber=${idNumber} `
+        );
+        set_TA_Department(resp.data.data.userInfo.department || "EECS");
+        set_TA_Info({
+          ...TA_info,
+          areaOfSpecialisation: resp2.data.data.userInfo.areaOfSpecialisation,
+          primarySkills: resp2.data.data.userInfo.primarySkills,
+          secondarySkills: resp2.data.data.userInfo.secondarySkills,
+          primaryProgrammingSkills: resp2.data.data.userInfo.primaryProgrammingSkills,
+          secondaryProgrammingSkills: resp2.data.data.userInfo.secondaryProgrammingSkills,
+          softwareTools: resp2.data.data.userInfo.softwareTools,
+          hardwareTools: resp2.data.data.userInfo.hardwareTools,
+          publications: resp2.data.data.userInfo.publications,
+          patents: resp2.data.data.userInfo.patents,
+        });
+        const newProjects = resp2.data.data.userInfo.experience.map((exp) => ({
+          startDate: new Date(exp.from),
+          endDate: new Date(exp.to),
+          companyName: exp.companyName,
+          industry: exp.industry,
+          post: exp.designation,
+        }));
+        // setExperienceList(newProjects);
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <TALayout>
