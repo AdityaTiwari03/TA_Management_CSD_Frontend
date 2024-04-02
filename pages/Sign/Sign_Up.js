@@ -69,7 +69,7 @@ export default function Sign_Up() {
         // Make post request
         try {
           const resp = await axios.post(
-            `https://ta-backend-eta.vercel.app/api/v1/users/register`,
+            `https://ta-backend-new.vercel.app/api/v1/users/register`,
             data
           );
           if (resp.data.statusCode === 200 && resp.data.success) {

@@ -128,7 +128,7 @@ export default function Professional_Info() {
         _id : localStorage.getItem("_id")
       };
       const resp = await axios.post(
-        `https://ta-backend-eta.vercel.app/api/v1/users/Professional_Info/?idNumber=${idNumber} `,
+        `https://ta-backend-new.vercel.app/api/v1/users/Professional_Info/?idNumber=${idNumber} `,
         data
       );
       if (resp.data.statusCode === 200 && resp.data.success) {
