@@ -44,7 +44,8 @@
 }
 .container {
   width: 45%;
-  display: block;
+  height: 500px;
+  overflow: scroll;
 }
 .head {
   font-size: x-large;

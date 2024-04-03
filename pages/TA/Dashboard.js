@@ -205,7 +205,7 @@ export default function Dashboard(ta) {
               {ta ? null : <div className={dashboard.Approve}>Approve</div>}
             </div>
           </div>
-          <div className="w-full flex gap-5 h-fit">
+          <div className="w-full flex gap-5  ">
             <div className={dashboard.container}>
               <div className={dashboard.head}>Industrial Information</div>
               {Object.entries(TA_info).map(([key, value], index) => (
