@@ -18,30 +18,33 @@ export default function Topbar() {
       <Nav.Item href="/TA/Dashboard" className={tb.nav}>
         {/* <Nav.Link href="/TA/Dashboard" className={tb.navbuttons}> */}
         <Image src={iitbhilai} style={{ width: 50, marginRight: 150 }} />
-        
+
         <Nav.Item className={tb.nav}>
-          <Nav.Link href="/TA/course_feed" className={tb.navbuttons}>
-            Course Feed
+          <Nav.Link href="/Faculty/Home" className={tb.navbuttons}>
+            Home
           </Nav.Link>
-          <Nav.Link href="/TA/add_Course" className={tb.navbuttons}>
-            Add Courses
+          <Nav.Link href="/Faculty/Find_TA" className={tb.navbuttons}>
+            Find TA
           </Nav.Link>
           <Nav.Link
             href={`/Personal_Info/?idNumber=${idNumber}`}
             className={tb.navbuttons}
+            disabled
           >
-            Update Info
+            Profile
           </Nav.Link>
-          <Nav.Link eventKey="disabled" className={tb.navbuttons}>
-            TA List
+          <Nav.Link eventKey="disabled" className={tb.navbuttons} disabled>
+            Leaves
           </Nav.Link>
-          <Nav.Link href={`/TA/Dashboard/?idNumber=${idNumber}`} className={tb.navbuttons}>
-            Dashboard
+          <Nav.Link
+            href={`/TA/Dashboard/?idNumber=${idNumber}`}
+            className={tb.navbuttons}
+            disabled
+          >
+            Requirements
           </Nav.Link>
         </Nav.Item>
       </Nav.Item>
-
-
 
       <Nav.Item className={tb.acc}>
         <Image src={account} style={{ width: 50 }} />

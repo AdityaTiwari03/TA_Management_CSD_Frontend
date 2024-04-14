@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TALayout from "./layout";
-import dashboard from "./dashboad.module.css";
+import dashboard from "../TA/dashboad.module.css";
 import img from "../../public/images.jpg";
 import Image from "next/image";
 import Accordion from "@mui/material/Accordion";
@@ -207,6 +207,7 @@ export default function Dashboard() {
               <div className={dashboard.Ta_des}>
                 Department : {TA_Department}
               </div>
+              <div className={dashboard.Approve}>Approve</div>
             </div>
           </div>
           <div className="w-full flex gap-5  ">
