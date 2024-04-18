@@ -50,23 +50,76 @@ export default function Find_TA() {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
-
-  useEffect(() => {
-    //API Call
+  function SendQuery() {
     console.log(inputValue);
-  }, [inputValue]);
+    //api
+  }
   return (
     <div>
       <Layout>
         <div className={Find.container}>
           <div className="flex justify-center w-full">
-            <input
-              class="rounded-md text-xl border-2 border-purple-500 p-3 focus:text-violet-950 focus:border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Search TAs"
-              style={{ color: "#4a3c8d", width: "80%" }}
-              value={inputValue}
-              onChange={handleInputChange}
-            />{" "}
+            <div className={Find.inputcontainer}>
+              <input
+                type="text"
+                name="text"
+                className={Find.input}
+                placeholder="Find TA"
+                value={inputValue}
+                onChange={handleInputChange}
+              />
+              <span className={Find.icon} onClick={SendQuery}>
+                <svg
+                  width="19px"
+                  height="19px"
+                  color="#4a3c8d"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                  <g
+                    id="SVGRepo_tracerCarrier"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></g>
+                  <g id="SVGRepo_iconCarrier">
+                    {" "}
+                    <path
+                      opacity="1"
+                      d="M14 5H20"
+                      stroke="#000"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>{" "}
+                    <path
+                      opacity="1"
+                      d="M14 8H17"
+                      stroke="#000"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>{" "}
+                    <path
+                      d="M21 11.5C21 16.75 16.75 21 11.5 21C6.25 21 2 16.75 2 11.5C2 6.25 6.25 2 11.5 2"
+                      stroke="#000"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>{" "}
+                    <path
+                      opacity="1"
+                      d="M22 22L20 20"
+                      stroke="#000"
+                      stroke-width="3.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>{" "}
+                  </g>
+                </svg>
+              </span>
+            </div>{" "}
           </div>
           <div className={Find.TA_List}>
             {Filtered_List.map((ta, index) => (

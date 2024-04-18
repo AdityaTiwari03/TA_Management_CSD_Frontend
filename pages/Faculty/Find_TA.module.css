@@ -44,6 +44,51 @@
   font-size: larger;
   color: #4a3c8d;
 }
+
+.inputcontainer {
+  width: 80%;
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  right: 10px;
+  top: calc(50% + 5px);
+  transform: translateY(calc(-50% - 5px));
+  cursor: pointer;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  color: #4a3c8d;
+  font-weight: 600;
+  transition: 0.2s linear;
+  border: 2.5px solid black;
+  font-size: large;
+  letter-spacing: 2px;
+}
+
+.input:focus {
+  color: #4a3c8d;
+  outline: none;
+  border: 0.5px solid black;
+  box-shadow: -5px -5px 0px black;
+}
+
+.input-container:hover > .icon {
+  animation: anim 1s linear infinite;
+}
+@keyframes anim {
+  0%,
+  100% {
+    transform: translateY(calc(-50% - 5px)) scale(1);
+  }
+
+  50% {
+    transform: translateY(calc(-50% - 5px)) scale(1.1);
+  }
+}
 @media only screen and (max-width: 768px) {
   .TA_Entry {
     flex-direction: column;
