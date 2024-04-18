@@ -7,7 +7,7 @@ import { useState } from "react";
 import { isValidPassword, isValidIdNumber } from "../../utils/validation";
 import sign from "./Sign_In.module.css";
 import SignInBtn from "./Sign_InBtn";
-//////////////////////////////////////
+
 import iitbhilai from "../../public/image 7.png";
 import college from "../../public/group_logo.svg";
 
@@ -16,7 +16,12 @@ export default function Sign_In() {
   const [password, setPassword] = useState("");
   const [idNumberErrorMessage, setIdNumberErrorMessage] = useState("");
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [faculty, setFaculty] = useState(false);
 
+  const handleToggleChange = (event) => {
+    const isChecked = event.target.checked;
+    setFaculty(isChecked);
+  };
   const router = useRouter();
 
   const navigateToAboutPage = (idNumber) => {
@@ -30,6 +35,7 @@ export default function Sign_In() {
   const handleSubmit = async (event) => {
     // Do something with the form data
     event.preventDefault();
+    console.log("Faculty: ", faculty);
     console.log("ID Number:", ID_Number);
     console.log("Password:", password);
     console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
@@ -114,6 +120,19 @@ export default function Sign_In() {
             {passwordErrorMessage && (
               <div style={{ color: "red" }}>{passwordErrorMessage}</div>
             )}{" "}
+            Are you Faculty?
+            <label className={sign.switch}>
+              <input
+                className={sign.cb}
+                type="checkbox"
+                checked={faculty}
+                onChange={handleToggleChange}
+              />
+              <span className={sign.toggle}>
+                <span className={sign.left}>No</span>
+                <span className={sign.right}>Yes</span>
+              </span>
+            </label>
             <button className={sign.button} onClick={handleSubmit}>
               Log In
             </button>
