@@ -128,6 +128,9 @@ export default function Dashboard() {
   const [GitHub, Set_Github] = useState("github");
   const [Portfolio, Set_Portfolio] = useState("portfolio");
   const [Other, Set_Other] = useState("otherlink");
+  function approveta(){
+    alert(`You Approved ${TA_Name}`)
+  }
   const fetchData = async (idNumber) => {
     try {
       console.log(idNumber);
@@ -207,7 +210,7 @@ export default function Dashboard() {
               <div className={dashboard.Ta_des}>
                 Department : {TA_Department}
               </div>
-              <div className={dashboard.Approve}>Approve</div>
+              <div className={dashboard.Approve} onClick={approveta}>Approve</div>
             </div>
           </div>
           <div className="w-full flex gap-5  ">
