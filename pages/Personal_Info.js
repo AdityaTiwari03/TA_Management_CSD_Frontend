@@ -24,14 +24,18 @@ export default function Personal_Info() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://ta-backend-new.vercel.app/api/v1/users/info/?idNumber=${id}`
+          `https://ta-backend-new.vercel.app/api/v1/users/info/?idNumber=${idNumber}`
         );
         Set_Name(
-          response.data.data.firstName + " " + response.data.data.lastName
+          response.data.data.firstName
         );
         Set_ID_Number(response.data.data.idNumber);
         Set_Email(response.data.data.email);
         Set_Ph1(response.data.data.phone);
+        // Set_Linkedin(response.data.data.Linkedin);
+
+        console.log("Res",response.data.data);
+        console.log("Linkedin",response.data.data.Linkedin);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -71,9 +75,32 @@ export default function Personal_Info() {
     sessionStorage.setItem("personalFormData", JSON.stringify(formData));
   }, [Name, Email, Ph1, Ph2, Linkedin, GitHub, Portfolio, Other]);
 
-  const handleProfessional = () => {
-    router.push(`/Professional_Info?idNumber=${idNumber}`);
+  const handleProfessional = async () => {
+    router.push(`/TA/Dashboard?idNumber=${idNumber}`);
+    try{
+      const info = {
+        Name,
+        Email,
+        Ph1,
+        Linkedin,
+        GitHub,
+        Portfolio,
+        Other,
+        Ph2
+      }
+
+      // write a put api with input idnumber
+      await axios.put(`https://ta-backend-new.vercel.app/api/v1/users/personal_info?idNumber=${idNumber}`, info)
+      .then((response) => {
+        console.log(response);
+      })
+    } catch(error){
+      console.error("Error:", error);
+    }
+
   };
+
+
   return (
     <TALayout>
       <div className="main">
