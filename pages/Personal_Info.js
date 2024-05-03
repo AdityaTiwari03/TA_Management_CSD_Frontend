@@ -25,6 +25,7 @@ export default function Personal_Info() {
       try {
         const response = await axios.get(
           `https://ta-backend-new.vercel.app/api/v1/users/info/?idNumber=${idNumber}`
+          // `http://localhost:8000/api/v1/users/info/?idNumber=${idNumber}`
         );
         Set_Name(
           response.data.data.firstName
@@ -32,10 +33,15 @@ export default function Personal_Info() {
         Set_ID_Number(response.data.data.idNumber);
         Set_Email(response.data.data.email);
         Set_Ph1(response.data.data.phone);
-        // Set_Linkedin(response.data.data.Linkedin);
+        Set_Github(response.data.data.GitHub);
+        Set_Linkedin(response.data.data.Linkedin);
+        Set_Portfolio(response.data.data.Portfolio);
+        Set_Other(response.data.data.Other);
+        Set_Ph2(response.data.data.Ph2);
 
         console.log("Res",response.data.data);
         console.log("Linkedin",response.data.data.Linkedin);
+        console.log("Github",response.data.data.Github);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
